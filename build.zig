@@ -49,18 +49,18 @@ pub fn build(b: *std.Build) void {
         module.addIncludePath(vulkan.path("include"));
         module.addIncludePath(sdl3.path("include"));
 
-        module.addIncludePath(b.path("generated"));
-        module.addIncludePath(b.path("generated/backends"));
-        module.addCSourceFile(.{ .file = b.path("generated/imgui.cpp") });
-        module.addCSourceFile(.{ .file = b.path("generated/imgui_widgets.cpp") });
-        module.addCSourceFile(.{ .file = b.path("generated/imgui_tables.cpp") });
-        module.addCSourceFile(.{ .file = b.path("generated/imgui_draw.cpp") });
-        module.addCSourceFile(.{ .file = b.path("generated/imgui_demo.cpp") });
-        module.addCSourceFile(.{ .file = b.path("generated/backends/imgui_impl_sdl3.cpp") });
-        module.addCSourceFile(.{ .file = b.path("generated/backends/imgui_impl_vulkan.cpp") });
-        module.addCSourceFile(.{ .file = b.path("generated/dcimgui.cpp") });
-        module.addCSourceFile(.{ .file = b.path("generated/dcimgui_internal.cpp") });
-        module.addCSourceFile(.{ .file = b.path("generated/backends/dcimgui_impl_sdl3.cpp") });
-        module.addCSourceFile(.{ .file = b.path("generated/backends/dcimgui_impl_vulkan.cpp") });
+        module.addIncludePath(b.path("src/generated"));
+        module.addIncludePath(b.path("src/generated/backends"));
+        module.addCSourceFile(.{ .file = b.path("src/generated/imgui.cpp") });
+        module.addCSourceFile(.{ .file = b.path("src/generated/imgui_widgets.cpp") });
+        module.addCSourceFile(.{ .file = b.path("src/generated/imgui_tables.cpp") });
+        module.addCSourceFile(.{ .file = b.path("src/generated/imgui_draw.cpp") });
+        module.addCSourceFile(.{ .file = b.path("src/generated/imgui_demo.cpp") });
+        module.addCSourceFile(.{ .file = b.path("src/generated/backends/imgui_impl_sdl3.cpp") });
+        module.addCSourceFile(.{ .file = b.path("src/generated/backends/imgui_impl_vulkan.cpp") });
+        module.addCSourceFile(.{ .file = b.path("src/generated/dcimgui.cpp") });
+        module.addCSourceFile(.{ .file = b.path("src/generated/dcimgui_internal.cpp") });
+        module.addCSourceFile(.{ .file = b.path("src/generated/backends/dcimgui_impl_sdl3.cpp") });
+        module.addCSourceFile(.{ .file = b.path("src/generated/backends/dcimgui_impl_vulkan.cpp") });
     }
 }

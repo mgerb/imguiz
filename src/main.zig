@@ -34,7 +34,7 @@ pub fn main() !void {
     defer _ = gpa.deinit();
     const allocator = gpa.allocator();
 
-    try std.fs.cwd().deleteTree("generated");
+    try std.fs.cwd().deleteTree("src/generated");
     try std.fs.cwd().deleteTree(TMP_DIR);
 
     std.fs.cwd().makeDir(TMP_DIR) catch |err| {
@@ -95,7 +95,7 @@ pub fn main() !void {
     });
 
     _ = try runCommand(.{
-        .args = &.{ "sh", "-c", "cp -R " ++ TMP_DIR ++ "/dear_bindings/generated ./" },
+        .args = &.{ "sh", "-c", "cp -R " ++ TMP_DIR ++ "/dear_bindings/generated ./src" },
         .allocator = allocator,
     });
 

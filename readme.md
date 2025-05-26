@@ -35,7 +35,7 @@ pub fn main() !void {
 
 ### Generator
 
-All bindings are in `./generated`. I will update them from the following branches as needed.
+All bindings are in `./src/generated`. I will update them from the following branches as needed.
 
 - [imgui](https://github.com/ocornut/imgui) (docking)
 - [dear_bindings](https://github.com/dearimgui/dear_bindings) (master)
@@ -50,7 +50,7 @@ The generator does the following
 - clones [dear_bindings](https://github.com/dearimgui/dear_bindings) to `./tmp`
 - clones [imgui](https://github.com/ocornut/imgui) to `./tmp`
 - executes `./tmp/dear_bindings/BuildAllBindings.sh`
-- copies all required C bindings to `./generated`, which can be natively included in zig
+- copies all required C bindings to `./src/generated`, which can be natively included in zig
 
 ### Example
 
