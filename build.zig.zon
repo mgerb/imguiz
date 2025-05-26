@@ -58,8 +58,11 @@
         "build.zig",
         "build.zig.zon",
         "src",
-        // For example...
-        //"LICENSE",
-        //"README.md",
+        "generated",
+        "readme.md",
+        "screenshots",
+        "example",
+        "flake.nix",
+        "flake.lock",
     },
 }

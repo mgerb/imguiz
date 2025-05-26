@@ -16,7 +16,7 @@ fn runCommand(opts: struct {
     args: []const []const u8,
     allocator: std.mem.Allocator,
     cwd: ?[]const u8 = null,
-}) !std.process.Child.Term {
+}) !void {
     const command = try std.mem.join(opts.allocator, " ", opts.args);
     defer opts.allocator.free(command);
     std.debug.print("\n--------------------\n{s}\n--------------------\n\n", .{command});
@@ -26,7 +26,19 @@ fn runCommand(opts: struct {
         child.cwd = cwd;
     }
     try child.spawn();
-    return try child.wait();
+    const term = try child.wait();
+
+    switch (term) {
+        .Exited => |val| {
+            if (val != 0) {
+                std.debug.print("exit code: {}\n", .{val});
+                return error.bad_exit;
+            }
+        },
+        .Signal => return error.signal,
+        .Stopped => return error.stopped,
+        .Unknown => return error.unknown,
+    }
 }
 
 pub fn main() !void {
@@ -95,7 +107,7 @@ pub fn main() !void {
     });
 
     _ = try runCommand(.{
-        .args = &.{ "sh", "-c", "cp -R " ++ TMP_DIR ++ "/dear_bindings/generated ./src" },
+        .args = &.{ "sh", "-c", "cp -R " ++ TMP_DIR ++ "/dear_bindings/generated ./" },
         .allocator = allocator,
     });
 
