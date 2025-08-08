@@ -26,7 +26,7 @@ exe.root_module.addImport("imguiz", imguiz.module("imguiz"));
 ```zig
 // main.zig
 const std = @import("std");
-const imguiz = @import("imguiz");
+const imguiz = @import("imguiz").imguiz;
 
 pub fn main() !void {
     std.debug.print("{s}\n", .{imguiz.ImGui_GetVersion()});

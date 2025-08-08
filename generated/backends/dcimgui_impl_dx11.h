@@ -14,8 +14,9 @@ typedef unsigned short ImDrawIdx;  // Default: 16-bit (for maximum compatibility
 // This needs to be used along with a Platform Backend (e.g. Win32)
 
 // Implemented features:
-//  [X] Renderer: User texture binding. Use 'ID3D11ShaderResourceView*' as ImTextureID. Read the FAQ about ImTextureID!
+//  [X] Renderer: User texture binding. Use 'ID3D11ShaderResourceView*' as texture identifier. Read the FAQ about ImTextureID/ImTextureRef!
 //  [X] Renderer: Large meshes support (64k+ vertices) even with 16-bit indices (ImGuiBackendFlags_RendererHasVtxOffset).
+//  [X] Renderer: Texture updates support for dynamic font atlas (ImGuiBackendFlags_RendererHasTextures).
 //  [X] Renderer: Expose selected render state for draw callbacks to use. Access in '(ImGui_ImplXXXX_RenderState*)GetPlatformIO().Renderer_RenderState'.
 //  [X] Renderer: Multi-viewport support (multiple windows). Enable with 'io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable'.
 
@@ -35,11 +36,6 @@ extern "C"
 #endif
 #include "dcimgui.h"
 #ifndef IMGUI_DISABLE
-typedef struct ID3D11Device ID3D11Device;
-typedef struct ID3D11DeviceContext ID3D11DeviceContext;
-typedef struct ID3D11SamplerState_t ID3D11SamplerState;
-typedef struct ID3D11Buffer_t ID3D11Buffer;
-
 typedef struct ImDrawData_t ImDrawData;
 // Follow "Getting Started" link and check examples/ folder to learn about using backends!
 CIMGUI_IMPL_API bool cImGui_ImplDX11_Init(ID3D11Device* device, ID3D11DeviceContext* device_context);
@@ -50,6 +46,9 @@ CIMGUI_IMPL_API void cImGui_ImplDX11_RenderDrawData(ImDrawData* draw_data);
 // Use if you want to reset your rendering device without losing Dear ImGui state.
 CIMGUI_IMPL_API bool cImGui_ImplDX11_CreateDeviceObjects(void);
 CIMGUI_IMPL_API void cImGui_ImplDX11_InvalidateDeviceObjects(void);
+
+// (Advanced) Use e.g. if you need to precisely control the timing of texture updates (e.g. for staged rendering), by setting ImDrawData::Textures = NULL to handle this manually.
+CIMGUI_IMPL_API void cImGui_ImplDX11_UpdateTexture(ImTextureData* tex);
 
 // [BETA] Selected render state data shared with callbacks.
 // This is temporarily stored in GetPlatformIO().Renderer_RenderState during the ImGui_ImplDX11_RenderDrawData() call.

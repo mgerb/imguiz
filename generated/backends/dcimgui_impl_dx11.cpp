@@ -51,6 +51,22 @@ static inline ::ImVec4 ConvertToCPP_ImVec4(const cimgui::ImVec4& src)
     return dest;
 }
 
+static inline cimgui::ImTextureRef ConvertFromCPP_ImTextureRef(const ::ImTextureRef& src)
+{
+    cimgui::ImTextureRef dest;
+    dest._TexData = reinterpret_cast<cimgui::ImTextureData*>(src._TexData);
+    dest._TexID = src._TexID;
+    return dest;
+}
+
+static inline ::ImTextureRef ConvertToCPP_ImTextureRef(const cimgui::ImTextureRef& src)
+{
+    ::ImTextureRef dest;
+    dest._TexData = reinterpret_cast<::ImTextureData*>(src._TexData);
+    dest._TexID = src._TexID;
+    return dest;
+}
+
 static inline cimgui::ImColor ConvertFromCPP_ImColor(const ::ImColor& src)
 {
     cimgui::ImColor dest;
@@ -75,9 +91,9 @@ static inline ::ImColor ConvertToCPP_ImColor(const cimgui::ImColor& src)
 
 #ifndef IMGUI_DISABLE
 
-CIMGUI_IMPL_API bool cimgui::cImGui_ImplDX11_Init(cimgui::ID3D11Device* device, cimgui::ID3D11DeviceContext* device_context)
+CIMGUI_IMPL_API bool cimgui::cImGui_ImplDX11_Init(ID3D11Device* device, ID3D11DeviceContext* device_context)
 {
-    return ::ImGui_ImplDX11_Init(reinterpret_cast<::ID3D11Device*>(device), reinterpret_cast<::ID3D11DeviceContext*>(device_context));
+    return ::ImGui_ImplDX11_Init(device, device_context);
 }
 
 CIMGUI_IMPL_API void cimgui::cImGui_ImplDX11_Shutdown(void)
@@ -103,6 +119,11 @@ CIMGUI_IMPL_API bool cimgui::cImGui_ImplDX11_CreateDeviceObjects(void)
 CIMGUI_IMPL_API void cimgui::cImGui_ImplDX11_InvalidateDeviceObjects(void)
 {
     ::ImGui_ImplDX11_InvalidateDeviceObjects();
+}
+
+CIMGUI_IMPL_API void cimgui::cImGui_ImplDX11_UpdateTexture(cimgui::ImTextureData* tex)
+{
+    ::ImGui_ImplDX11_UpdateTexture(reinterpret_cast<::ImTextureData*>(tex));
 }
 
 #endif // #ifndef IMGUI_DISABLE

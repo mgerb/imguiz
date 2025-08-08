@@ -40,12 +40,12 @@
             .path = "..",
         },
         .vulkan_headers = .{
-            .url = "git+https://github.com/KhronosGroup/Vulkan-Headers#75ad707a587e1469fb53a901b9b68fe9f6fbc11f",
-            .hash = "N-V-__8AAPJS7wFRVAIGhMZ7cis5e-y5LZfn2KfO5O2jiHGH",
+            .url = "git+https://github.com/KhronosGroup/Vulkan-Headers#a01329f307fa6067da824de9f587f292d761680b",
+            .hash = "N-V-__8AAENI9wHIo_URLJ_ZfwllA6o_VuxahRnqI7iQfhEb",
         },
         .vulkan = .{
-            .url = "git+https://github.com/Snektron/vulkan-zig#9b4090c852760ce3210562f62ffaf301479c38ba",
-            .hash = "vulkan-0.0.0-r7Ytx2dUAwDhoUvuIqliqPUbyDZZi0bl_CQIwspUpHs_",
+            .url = "git+https://github.com/Snektron/vulkan-zig#ed429842b8ad60966bc3b8b214606d8a5714f99e",
+            .hash = "vulkan-0.0.0-r7Ytx5w-AwC04xBpfzcuIjGyYv2z6xb1i49ZUeNUgT5H",
         },
     },
 

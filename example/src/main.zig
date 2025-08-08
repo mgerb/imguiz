@@ -1,5 +1,4 @@
 const std = @import("std");
-const imguiz = @import("imguiz");
 const UI = @import("./ui.zig").UI;
 const Vulkan = @import("./vulkan.zig").Vulkan;
 

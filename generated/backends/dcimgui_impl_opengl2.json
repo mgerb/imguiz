@@ -68,7 +68,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_opengl2.h",
-                "line": 31
+                "line": 32
             }
         },
         {
@@ -91,7 +91,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_opengl2.h",
-                "line": 32
+                "line": 33
             }
         },
         {
@@ -114,7 +114,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_opengl2.h",
-                "line": 33
+                "line": 34
             }
         },
         {
@@ -154,12 +154,12 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_opengl2.h",
-                "line": 34
+                "line": 35
             }
         },
         {
-            "name": "cImGui_ImplOpenGL2_CreateFontsTexture",
-            "original_fully_qualified_name": "ImGui_ImplOpenGL2_CreateFontsTexture",
+            "name": "cImGui_ImplOpenGL2_CreateDeviceObjects",
+            "original_fully_qualified_name": "ImGui_ImplOpenGL2_CreateDeviceObjects",
             "return_type": {
                 "declaration": "bool",
                 "description": {
@@ -182,53 +182,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_opengl2.h",
-                "line": 37
-            }
-        },
-        {
-            "name": "cImGui_ImplOpenGL2_DestroyFontsTexture",
-            "original_fully_qualified_name": "ImGui_ImplOpenGL2_DestroyFontsTexture",
-            "return_type": {
-                "declaration": "void",
-                "description": {
-                    "kind": "Builtin",
-                    "builtin_type": "void"
-                }
-            },
-            "arguments": [],
-            "is_default_argument_helper": false,
-            "is_manual_helper": false,
-            "is_imstr_helper": false,
-            "has_imstr_helper": false,
-            "is_unformatted_helper": false,
-            "is_static": false,
-            "is_internal": false,
-            "source_location": {
-                "filename": "imgui_impl_opengl2.h",
                 "line": 38
-            }
-        },
-        {
-            "name": "cImGui_ImplOpenGL2_CreateDeviceObjects",
-            "original_fully_qualified_name": "ImGui_ImplOpenGL2_CreateDeviceObjects",
-            "return_type": {
-                "declaration": "bool",
-                "description": {
-                    "kind": "Builtin",
-                    "builtin_type": "bool"
-                }
-            },
-            "arguments": [],
-            "is_default_argument_helper": false,
-            "is_manual_helper": false,
-            "is_imstr_helper": false,
-            "has_imstr_helper": false,
-            "is_unformatted_helper": false,
-            "is_static": false,
-            "is_internal": false,
-            "source_location": {
-                "filename": "imgui_impl_opengl2.h",
-                "line": 39
             }
         },
         {
@@ -251,7 +205,52 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_opengl2.h",
-                "line": 40
+                "line": 39
+            }
+        },
+        {
+            "name": "cImGui_ImplOpenGL2_UpdateTexture",
+            "original_fully_qualified_name": "ImGui_ImplOpenGL2_UpdateTexture",
+            "return_type": {
+                "declaration": "void",
+                "description": {
+                    "kind": "Builtin",
+                    "builtin_type": "void"
+                }
+            },
+            "arguments": [
+                {
+                    "name": "tex",
+                    "type": {
+                        "declaration": "ImTextureData*",
+                        "description": {
+                            "kind": "Pointer",
+                            "inner_type": {
+                                "kind": "User",
+                                "name": "ImTextureData"
+                            }
+                        }
+                    },
+                    "is_array": false,
+                    "is_varargs": false,
+                    "is_instance_pointer": false
+                }
+            ],
+            "is_default_argument_helper": false,
+            "is_manual_helper": false,
+            "is_imstr_helper": false,
+            "has_imstr_helper": false,
+            "is_unformatted_helper": false,
+            "is_static": false,
+            "comments": {
+                "preceding": [
+                    "// (Advanced) Use e.g. if you need to precisely control the timing of texture updates (e.g. for staged rendering), by setting ImDrawData::Textures = NULL to handle this manually."
+                ]
+            },
+            "is_internal": false,
+            "source_location": {
+                "filename": "imgui_impl_opengl2.h",
+                "line": 42
             }
         }
     ]

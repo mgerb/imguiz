@@ -28,62 +28,6 @@
     ],
     "structs": [
         {
-            "name": "ID3D11Device",
-            "original_fully_qualified_name": "ID3D11Device",
-            "kind": "struct",
-            "by_value": false,
-            "forward_declaration": true,
-            "is_anonymous": false,
-            "fields": [],
-            "is_internal": false,
-            "source_location": {
-                "filename": "imgui_impl_dx11.h",
-                "line": 22
-            }
-        },
-        {
-            "name": "ID3D11DeviceContext",
-            "original_fully_qualified_name": "ID3D11DeviceContext",
-            "kind": "struct",
-            "by_value": false,
-            "forward_declaration": true,
-            "is_anonymous": false,
-            "fields": [],
-            "is_internal": false,
-            "source_location": {
-                "filename": "imgui_impl_dx11.h",
-                "line": 23
-            }
-        },
-        {
-            "name": "ID3D11SamplerState",
-            "original_fully_qualified_name": "ID3D11SamplerState",
-            "kind": "struct",
-            "by_value": false,
-            "forward_declaration": true,
-            "is_anonymous": false,
-            "fields": [],
-            "is_internal": false,
-            "source_location": {
-                "filename": "imgui_impl_dx11.h",
-                "line": 24
-            }
-        },
-        {
-            "name": "ID3D11Buffer",
-            "original_fully_qualified_name": "ID3D11Buffer",
-            "kind": "struct",
-            "by_value": false,
-            "forward_declaration": true,
-            "is_anonymous": false,
-            "fields": [],
-            "is_internal": false,
-            "source_location": {
-                "filename": "imgui_impl_dx11.h",
-                "line": 25
-            }
-        },
-        {
             "name": "ImDrawData",
             "original_fully_qualified_name": "ImDrawData",
             "kind": "struct",
@@ -122,7 +66,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_dx11.h",
-                        "line": 42
+                        "line": 46
                     }
                 },
                 {
@@ -142,7 +86,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_dx11.h",
-                        "line": 43
+                        "line": 47
                     }
                 },
                 {
@@ -162,7 +106,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_dx11.h",
-                        "line": 44
+                        "line": 48
                     }
                 },
                 {
@@ -182,7 +126,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_dx11.h",
-                        "line": 45
+                        "line": 49
                     }
                 }
             ],
@@ -196,7 +140,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_dx11.h",
-                "line": 40
+                "line": 44
             }
         }
     ],
@@ -259,7 +203,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_dx11.h",
-                "line": 28
+                "line": 29
             }
         },
         {
@@ -282,7 +226,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_dx11.h",
-                "line": 29
+                "line": 30
             }
         },
         {
@@ -305,7 +249,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_dx11.h",
-                "line": 30
+                "line": 31
             }
         },
         {
@@ -345,7 +289,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_dx11.h",
-                "line": 31
+                "line": 32
             }
         },
         {
@@ -373,7 +317,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_dx11.h",
-                "line": 34
+                "line": 35
             }
         },
         {
@@ -396,7 +340,52 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_dx11.h",
-                "line": 35
+                "line": 36
+            }
+        },
+        {
+            "name": "cImGui_ImplDX11_UpdateTexture",
+            "original_fully_qualified_name": "ImGui_ImplDX11_UpdateTexture",
+            "return_type": {
+                "declaration": "void",
+                "description": {
+                    "kind": "Builtin",
+                    "builtin_type": "void"
+                }
+            },
+            "arguments": [
+                {
+                    "name": "tex",
+                    "type": {
+                        "declaration": "ImTextureData*",
+                        "description": {
+                            "kind": "Pointer",
+                            "inner_type": {
+                                "kind": "User",
+                                "name": "ImTextureData"
+                            }
+                        }
+                    },
+                    "is_array": false,
+                    "is_varargs": false,
+                    "is_instance_pointer": false
+                }
+            ],
+            "is_default_argument_helper": false,
+            "is_manual_helper": false,
+            "is_imstr_helper": false,
+            "has_imstr_helper": false,
+            "is_unformatted_helper": false,
+            "is_static": false,
+            "comments": {
+                "preceding": [
+                    "// (Advanced) Use e.g. if you need to precisely control the timing of texture updates (e.g. for staged rendering), by setting ImDrawData::Textures = NULL to handle this manually."
+                ]
+            },
+            "is_internal": false,
+            "source_location": {
+                "filename": "imgui_impl_dx11.h",
+                "line": 39
             }
         }
     ]

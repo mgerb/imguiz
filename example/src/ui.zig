@@ -1,6 +1,6 @@
 const std = @import("std");
 
-const c = @import("imguiz");
+const imguiz = @import("imguiz").imguiz;
 const vk = @import("vulkan");
 
 const Vulkan = @import("./vulkan.zig").Vulkan;
@@ -10,9 +10,9 @@ const WIDTH = 1600;
 const HEIGHT = 1000;
 
 const MIN_IMAGE_COUNT = 2;
-var g_PipelineCache: c.VkPipelineCache = std.mem.zeroes(c.VkPipelineCache);
+var g_PipelineCache: imguiz.VkPipelineCache = std.mem.zeroes(imguiz.VkPipelineCache);
 
-const SDL_INIT_FLAGS = c.SDL_INIT_VIDEO | c.SDL_INIT_GAMEPAD;
+const SDL_INIT_FLAGS = imguiz.SDL_INIT_VIDEO | imguiz.SDL_INIT_GAMEPAD;
 
 pub const UI = struct {
     const Self = @This();
@@ -20,9 +20,9 @@ pub const UI = struct {
     vulkan: *Vulkan,
     allocator: std.mem.Allocator,
 
-    window: ?*c.struct_SDL_Window = null,
-    surface: ?c.VkSurfaceKHR = null,
-    vulkan_window: c.ImGui_ImplVulkanH_Window = std.mem.zeroes(c.ImGui_ImplVulkanH_Window),
+    window: ?*imguiz.struct_SDL_Window = null,
+    surface: ?imguiz.VkSurfaceKHR = null,
+    vulkan_window: imguiz.ImGui_ImplVulkanH_Window = std.mem.zeroes(imguiz.ImGui_ImplVulkanH_Window),
     swapchain_rebuild: bool = false,
 
     /// Init SDL and return new UI instance
@@ -37,11 +37,11 @@ pub const UI = struct {
             .vulkan = vulkan,
         };
 
-        if (!c.SDL_Init(SDL_INIT_FLAGS)) {
+        if (!imguiz.SDL_Init(SDL_INIT_FLAGS)) {
             return error.SDL_initFailure;
         }
 
-        const version = c.SDL_GetVersion();
+        const version = imguiz.SDL_GetVersion();
         std.debug.print("SDL version: {}\n", .{version});
 
         try self.initVulkan();
@@ -51,41 +51,41 @@ pub const UI = struct {
 
     /// Caller owns memory
     pub fn getSDLVulkanExtensions(allocator: std.mem.Allocator) !std.ArrayList([*:0]const u8) {
-        if (!c.SDL_Init(SDL_INIT_FLAGS)) {
+        if (!imguiz.SDL_Init(SDL_INIT_FLAGS)) {
             return error.SDL_initFailure;
         }
-        defer c.SDL_Quit();
+        defer imguiz.SDL_Quit();
 
         var extensions = std.ArrayList([*:0]const u8).init(allocator);
         var extensions_count: u32 = 0;
-        const sdl_extensions = c.SDL_Vulkan_GetInstanceExtensions(&extensions_count);
+        const sdl_extensions = imguiz.SDL_Vulkan_GetInstanceExtensions(&extensions_count);
         for (0..extensions_count) |i| try extensions.append(std.mem.span(sdl_extensions[i]));
 
         return extensions;
     }
 
     fn initVulkan(self: *Self) !void {
-        self.window = c.SDL_CreateWindow("imguiz example", WIDTH, HEIGHT, c.SDL_WINDOW_VULKAN | c.SDL_WINDOW_RESIZABLE | c.SDL_WINDOW_HIGH_PIXEL_DENSITY);
+        self.window = imguiz.SDL_CreateWindow("imguiz example", WIDTH, HEIGHT, imguiz.SDL_WINDOW_VULKAN | imguiz.SDL_WINDOW_RESIZABLE | imguiz.SDL_WINDOW_HIGH_PIXEL_DENSITY);
         if (self.window == null) return error.SDL_CreateWindowFailure;
         errdefer {
             if (self.window) |window| {
-                c.SDL_DestroyWindow(window);
+                imguiz.SDL_DestroyWindow(window);
             }
         }
 
-        var surface: c.VkSurfaceKHR = undefined;
+        var surface: imguiz.VkSurfaceKHR = undefined;
 
-        if (!c.SDL_Vulkan_CreateSurface(self.window, self.vkInstance(), null, &surface)) {
+        if (!imguiz.SDL_Vulkan_CreateSurface(self.window, self.vkInstance(), null, &surface)) {
             return error.SDL_Vulkan_CreateSurfaceFailure;
         }
         self.surface = surface;
 
-        if (!c.cImGui_ImplVulkan_LoadFunctions(@bitCast(API_VERSION), loader)) {
+        if (!imguiz.cImGui_ImplVulkan_LoadFunctions(@bitCast(API_VERSION), loader)) {
             return error.ImGuiVulkanLoadFailure;
         }
 
         try self.setupVulkanWindow();
-        errdefer c.cImGui_ImplVulkanH_DestroyWindow(
+        errdefer imguiz.cImGui_ImplVulkanH_DestroyWindow(
             self.vkInstance(),
             self.vkDevice(),
             @ptrCast(&self.vulkan_window),
@@ -100,35 +100,35 @@ pub const UI = struct {
         // )) {
         //     return error.SDL_SetWindowPositionFailure;
         // }
-        if (!c.SDL_ShowWindow(self.window.?)) {
+        if (!imguiz.SDL_ShowWindow(self.window.?)) {
             return error.SDL_ShowWindowFailure;
         }
 
         // Setup Dear ImGui context
-        if (c.ImGui_CreateContext(null) == null) return error.ImGuiCreateContextFailure;
-        errdefer c.ImGui_DestroyContext(null);
-        const io = c.ImGui_GetIO();
-        io.*.ConfigFlags |= c.ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
-        io.*.ConfigFlags |= c.ImGuiConfigFlags_NavEnableGamepad; // Enable Gamepad Controls
+        if (imguiz.ImGui_CreateContext(null) == null) return error.ImGuiCreateContextFailure;
+        errdefer imguiz.ImGui_DestroyContext(null);
+        const io = imguiz.ImGui_GetIO();
+        io.*.ConfigFlags |= imguiz.ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
+        io.*.ConfigFlags |= imguiz.ImGuiConfigFlags_NavEnableGamepad; // Enable Gamepad Controls
         // io.*.ConfigFlags |= c.ImGuiConfigFlags_DockingEnable;
         // io.*.ConfigFlags |= c.ImGuiConfigFlags_ViewportsEnable;
 
         // Setup Dear ImGui style
-        c.ImGui_StyleColorsDark(null);
+        imguiz.ImGui_StyleColorsDark(null);
 
-        const style = c.ImGui_GetStyle();
-        if (io.*.ConfigFlags & c.ImGuiConfigFlags_ViewportsEnable > 0) {
+        const style = imguiz.ImGui_GetStyle();
+        if (io.*.ConfigFlags & imguiz.ImGuiConfigFlags_ViewportsEnable > 0) {
             style.*.WindowRounding = 0.0;
-            style.*.Colors[c.ImGuiCol_WindowBg].w = 1.0;
+            style.*.Colors[imguiz.ImGuiCol_WindowBg].w = 1.0;
         }
 
         // Setup Platform/Renderer backends
-        if (!c.cImGui_ImplSDL3_InitForVulkan(self.window.?)) {
+        if (!imguiz.cImGui_ImplSDL3_InitForVulkan(self.window.?)) {
             return error.cImGui_ImplSDL3_InitForVulkanFailure;
         }
-        errdefer c.cImGui_ImplSDL3_Shutdown();
+        errdefer imguiz.cImGui_ImplSDL3_Shutdown();
 
-        var init_info = c.ImGui_ImplVulkan_InitInfo{};
+        var init_info = imguiz.ImGui_ImplVulkan_InitInfo{};
         init_info.Instance = self.vkInstance();
         init_info.PhysicalDevice = self.vkPhysicalDevice();
         init_info.Device = self.vkDevice();
@@ -140,13 +140,13 @@ pub const UI = struct {
         init_info.Subpass = 0;
         init_info.MinImageCount = MIN_IMAGE_COUNT;
         init_info.ImageCount = self.vulkan_window.ImageCount;
-        init_info.MSAASamples = c.VK_SAMPLE_COUNT_1_BIT;
+        init_info.MSAASamples = imguiz.VK_SAMPLE_COUNT_1_BIT;
         init_info.Allocator = null;
         init_info.CheckVkResultFn = check_vk_result;
-        if (!c.cImGui_ImplVulkan_Init(&init_info)) {
+        if (!imguiz.cImGui_ImplVulkan_Init(&init_info)) {
             return error.ImGuiVulkanInitFailure;
         }
-        errdefer c.cImGui_ImplVulkan_Shutdown();
+        errdefer imguiz.cImGui_ImplVulkan_Shutdown();
 
         // Load Fonts
         // - If no fonts are loaded, dear imgui will use the default font. You can also load multiple fonts and use ImGui::PushFont()/PopFont() to select them.
@@ -168,7 +168,7 @@ pub const UI = struct {
         var show_demo_window = true;
         var show_another_window = false;
         // black background
-        var clear_color: c.ImVec4 = .{ .x = 0.0, .y = 0.0, .z = 0.0, .w = 1.0 };
+        var clear_color: imguiz.ImVec4 = .{ .x = 0.0, .y = 0.0, .z = 0.0, .w = 1.0 };
 
         var f: f32 = 0.0;
         var counter: i32 = 0;
@@ -181,26 +181,26 @@ pub const UI = struct {
             // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application, or clear/overwrite your copy of the mouse data.
             // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application, or clear/overwrite your copy of the keyboard data.
             // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
-            var event: c.SDL_Event = undefined;
-            while (c.SDL_PollEvent(&event)) {
-                _ = c.cImGui_ImplSDL3_ProcessEvent(&event);
-                if (event.type == c.SDL_EVENT_QUIT)
+            var event: imguiz.SDL_Event = undefined;
+            while (imguiz.SDL_PollEvent(&event)) {
+                _ = imguiz.cImGui_ImplSDL3_ProcessEvent(&event);
+                if (event.type == imguiz.SDL_EVENT_QUIT)
                     done = true;
-                if (event.type == c.SDL_EVENT_WINDOW_CLOSE_REQUESTED and event.window.windowID == c.SDL_GetWindowID(self.window.?))
+                if (event.type == imguiz.SDL_EVENT_WINDOW_CLOSE_REQUESTED and event.window.windowID == imguiz.SDL_GetWindowID(self.window.?))
                     done = true;
             }
-            if ((c.SDL_GetWindowFlags(self.window.?) & c.SDL_WINDOW_MINIMIZED) > 0) {
-                c.SDL_Delay(10);
+            if ((imguiz.SDL_GetWindowFlags(self.window.?) & imguiz.SDL_WINDOW_MINIMIZED) > 0) {
+                imguiz.SDL_Delay(10);
                 continue;
             }
 
             // Resize swap chain?
             var fb_width: i32 = undefined;
             var fb_height: i32 = undefined;
-            if (!c.SDL_GetWindowSize(self.window.?, &fb_width, &fb_height)) return error.SDL_GetWindowSizeFailure;
+            if (!imguiz.SDL_GetWindowSize(self.window.?, &fb_width, &fb_height)) return error.SDL_GetWindowSizeFailure;
             if (fb_width > 0 and fb_height > 0 and (self.swapchain_rebuild or self.vulkan_window.Width != fb_width or self.vulkan_window.Height != fb_height)) {
-                c.cImGui_ImplVulkan_SetMinImageCount(MIN_IMAGE_COUNT);
-                c.cImGui_ImplVulkanH_CreateOrResizeWindow(
+                imguiz.cImGui_ImplVulkan_SetMinImageCount(MIN_IMAGE_COUNT);
+                imguiz.cImGui_ImplVulkanH_CreateOrResizeWindow(
                     self.vkInstance(),
                     self.vkPhysicalDevice(),
                     self.vkDevice(),
@@ -216,48 +216,48 @@ pub const UI = struct {
             }
 
             // Start the Dear ImGui frame
-            c.cImGui_ImplVulkan_NewFrame();
-            c.cImGui_ImplSDL3_NewFrame();
-            c.ImGui_NewFrame();
+            imguiz.cImGui_ImplVulkan_NewFrame();
+            imguiz.cImGui_ImplSDL3_NewFrame();
+            imguiz.ImGui_NewFrame();
 
             // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
             if (show_demo_window) {
-                c.ImGui_ShowDemoWindow(&show_demo_window);
+                imguiz.ImGui_ShowDemoWindow(&show_demo_window);
             }
 
             {
-                _ = c.ImGui_Begin("Hello, world!", null, 0);
-                defer c.ImGui_End();
+                _ = imguiz.ImGui_Begin("Hello, world!", null, 0);
+                defer imguiz.ImGui_End();
 
-                if (c.ImGui_SmallButton("small button")) {
+                if (imguiz.ImGui_SmallButton("small button")) {
                     std.debug.print("small button clicked!!\n", .{});
                 }
 
-                c.ImGui_Text("This is some useful text.");
-                _ = c.ImGui_Checkbox("Demo Window", &show_demo_window);
-                _ = c.ImGui_Checkbox("Another Window", &show_another_window);
+                imguiz.ImGui_Text("This is some useful text.");
+                _ = imguiz.ImGui_Checkbox("Demo Window", &show_demo_window);
+                _ = imguiz.ImGui_Checkbox("Another Window", &show_another_window);
 
-                _ = c.ImGui_SliderFloat("float", &f, 0.0, 1.0);
-                _ = c.ImGui_ColorEdit3("clear color", @ptrCast(&clear_color), 0);
+                _ = imguiz.ImGui_SliderFloat("float", &f, 0.0, 1.0);
+                _ = imguiz.ImGui_ColorEdit3("clear color", @ptrCast(&clear_color), 0);
 
-                if (c.ImGui_Button("Button")) counter += 1;
-                c.ImGui_SameLine();
-                c.ImGui_Text("counter = %d", counter);
+                if (imguiz.ImGui_Button("Button")) counter += 1;
+                imguiz.ImGui_SameLine();
+                imguiz.ImGui_Text("counter = %d", counter);
 
-                c.ImGui_Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0 / io.*.Framerate, io.*.Framerate);
+                imguiz.ImGui_Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0 / io.*.Framerate, io.*.Framerate);
             }
 
             // 3. Show another simple window.
             if (show_another_window) {
-                _ = c.ImGui_Begin("Another Window", &show_another_window, 0);
-                defer c.ImGui_End();
-                c.ImGui_Text("Hello from another window!");
-                if (c.ImGui_Button("Close Me")) show_another_window = false;
+                _ = imguiz.ImGui_Begin("Another Window", &show_another_window, 0);
+                defer imguiz.ImGui_End();
+                imguiz.ImGui_Text("Hello from another window!");
+                if (imguiz.ImGui_Button("Close Me")) show_another_window = false;
             }
 
             // Rendering
-            c.ImGui_Render();
-            const draw_data = c.ImGui_GetDrawData();
+            imguiz.ImGui_Render();
+            const draw_data = imguiz.ImGui_GetDrawData();
             const is_minimized = (draw_data.*.DisplaySize.x <= 0.0 or draw_data.*.DisplaySize.y <= 0.0);
             self.vulkan_window.ClearValue.color.float32[0] = clear_color.x * clear_color.w;
             self.vulkan_window.ClearValue.color.float32[1] = clear_color.y * clear_color.w;
@@ -267,9 +267,9 @@ pub const UI = struct {
                 try self.frameRender(draw_data);
             }
 
-            if (io.*.ConfigFlags & c.ImGuiConfigFlags_ViewportsEnable > 0) {
-                c.ImGui_UpdatePlatformWindows();
-                c.ImGui_RenderPlatformWindowsDefault();
+            if (io.*.ConfigFlags & imguiz.ImGuiConfigFlags_ViewportsEnable > 0) {
+                imguiz.ImGui_UpdatePlatformWindows();
+                imguiz.ImGui_RenderPlatformWindowsDefault();
             }
 
             if (!is_minimized) {
@@ -281,7 +281,7 @@ pub const UI = struct {
         try self.vulkan.device.deviceWaitIdle();
     }
 
-    fn frameRender(self: *Self, draw_data: *c.ImDrawData) !void {
+    fn frameRender(self: *Self, draw_data: *imguiz.ImDrawData) !void {
         var wd = &self.vulkan_window;
 
         var image_acquired_semaphore = wd.FrameSemaphores.Data[wd.SemaphoreIndex].ImageAcquiredSemaphore;
@@ -310,7 +310,7 @@ pub const UI = struct {
         var fd = &wd.Frames.Data[wd.FrameIndex];
 
         {
-            const err = try self.vulkan.device.waitForFences(1, @ptrCast(&fd.Fence), c.VK_TRUE, std.math.maxInt(u64));
+            const err = try self.vulkan.device.waitForFences(1, @ptrCast(&fd.Fence), imguiz.VK_TRUE, std.math.maxInt(u64));
             check_vk_result(@intFromEnum(err));
             try self.vulkan.device.resetFences(1, @ptrCast(&fd.Fence));
         }
@@ -334,7 +334,7 @@ pub const UI = struct {
         }
 
         // Record dear imgui primitives into command buffer
-        c.cImGui_ImplVulkan_RenderDrawData(draw_data, fd.CommandBuffer);
+        imguiz.cImGui_ImplVulkan_RenderDrawData(draw_data, fd.CommandBuffer);
 
         // Submit command buffer
         self.vulkan.device.cmdEndRenderPass(@enumFromInt(@intFromPtr(fd.CommandBuffer)));
@@ -404,9 +404,9 @@ pub const UI = struct {
         ) catch return error.NoWSISupport;
 
         // Select Surface Format
-        const requestSurfaceImageFormat = [_]c.VkFormat{ c.VK_FORMAT_B8G8R8A8_UNORM, c.VK_FORMAT_R8G8B8A8_UNORM, c.VK_FORMAT_B8G8R8_UNORM, c.VK_FORMAT_R8G8B8_UNORM };
-        const requestSurfaceColorSpace = c.VK_COLORSPACE_SRGB_NONLINEAR_KHR;
-        self.vulkan_window.SurfaceFormat = c.cImGui_ImplVulkanH_SelectSurfaceFormat(
+        const requestSurfaceImageFormat = [_]imguiz.VkFormat{ imguiz.VK_FORMAT_B8G8R8A8_UNORM, imguiz.VK_FORMAT_R8G8B8A8_UNORM, imguiz.VK_FORMAT_B8G8R8_UNORM, imguiz.VK_FORMAT_R8G8B8_UNORM };
+        const requestSurfaceColorSpace = imguiz.VK_COLORSPACE_SRGB_NONLINEAR_KHR;
+        self.vulkan_window.SurfaceFormat = imguiz.cImGui_ImplVulkanH_SelectSurfaceFormat(
             self.vkPhysicalDevice(),
             self.vulkan_window.Surface,
             @ptrCast(&requestSurfaceImageFormat),
@@ -415,13 +415,13 @@ pub const UI = struct {
         );
 
         // Select Present Mode
-        const present_modes = [_]c.VkPresentModeKHR{
+        const present_modes = [_]imguiz.VkPresentModeKHR{
             // NOTE: uncommand for unlimited frame rate
             // c.VK_PRESENT_MODE_MAILBOX_KHR,
             // c.VK_PRESENT_MODE_IMMEDIATE_KHR,
-            c.VK_PRESENT_MODE_FIFO_KHR,
+            imguiz.VK_PRESENT_MODE_FIFO_KHR,
         };
-        self.vulkan_window.PresentMode = c.cImGui_ImplVulkanH_SelectPresentMode(
+        self.vulkan_window.PresentMode = imguiz.cImGui_ImplVulkanH_SelectPresentMode(
             self.vkPhysicalDevice(),
             self.vulkan_window.Surface,
             &present_modes[0],
@@ -429,7 +429,7 @@ pub const UI = struct {
         );
 
         // Create SwapChain, RenderPass, Framebuffer, etc.
-        c.cImGui_ImplVulkanH_CreateOrResizeWindow(
+        imguiz.cImGui_ImplVulkanH_CreateOrResizeWindow(
             self.vkInstance(),
             self.vkPhysicalDevice(),
             self.vkDevice(),
@@ -442,43 +442,43 @@ pub const UI = struct {
         );
     }
 
-    fn loader(name: [*c]const u8, instance: ?*anyopaque) callconv(.C) ?*const fn () callconv(.C) void {
-        const vkGetInstanceProcAddr: c.PFN_vkGetInstanceProcAddr = @ptrCast(c.SDL_Vulkan_GetVkGetInstanceProcAddr());
+    fn loader(name: [*c]const u8, instance: ?*anyopaque) callconv(.c) ?*const fn () callconv(.c) void {
+        const vkGetInstanceProcAddr: imguiz.PFN_vkGetInstanceProcAddr = @ptrCast(imguiz.SDL_Vulkan_GetVkGetInstanceProcAddr());
         return vkGetInstanceProcAddr.?(@ptrCast(instance), name);
     }
 
-    fn check_vk_result(err: c.VkResult) callconv(.C) void {
+    fn check_vk_result(err: imguiz.VkResult) callconv(.c) void {
         if (err == 0) return;
         std.debug.print("[vulkan] Error: VkResult = {d}\n", .{err});
         if (err < 0) std.process.exit(1);
     }
 
-    fn vkInstance(self: *const Self) c.VkInstance {
+    fn vkInstance(self: *const Self) imguiz.VkInstance {
         return @ptrFromInt(@intFromEnum(self.vulkan.instance.handle));
     }
 
-    fn vkDevice(self: *const Self) c.VkDevice {
+    fn vkDevice(self: *const Self) imguiz.VkDevice {
         return @ptrFromInt(@intFromEnum(self.vulkan.device.handle));
     }
 
-    fn vkPhysicalDevice(self: *const Self) c.VkPhysicalDevice {
+    fn vkPhysicalDevice(self: *const Self) imguiz.VkPhysicalDevice {
         return @ptrFromInt(@intFromEnum(self.vulkan.physical_device));
     }
 
-    fn vkDescriptorPool(self: *const Self) c.VkDescriptorPool {
+    fn vkDescriptorPool(self: *const Self) imguiz.VkDescriptorPool {
         return @ptrFromInt(@intFromEnum(self.vulkan.descriptor_pool));
     }
 
-    fn vkQueue(self: *const Self) c.VkQueue {
+    fn vkQueue(self: *const Self) imguiz.VkQueue {
         return @ptrFromInt(@intFromEnum(self.vulkan.graphics_queue.handle));
     }
 
     pub fn deinit(self: *const Self) void {
-        c.cImGui_ImplVulkan_Shutdown();
-        c.cImGui_ImplSDL3_Shutdown();
+        imguiz.cImGui_ImplVulkan_Shutdown();
+        imguiz.cImGui_ImplSDL3_Shutdown();
 
         // if (self.vulkan_window) |*vulkan_window| {
-        c.cImGui_ImplVulkanH_DestroyWindow(
+        imguiz.cImGui_ImplVulkanH_DestroyWindow(
             self.vkInstance(),
             self.vkDevice(),
             @constCast(@ptrCast(&self.vulkan_window)),
@@ -487,9 +487,9 @@ pub const UI = struct {
         // }
 
         if (self.window) |window| {
-            c.SDL_DestroyWindow(window);
+            imguiz.SDL_DestroyWindow(window);
         }
-        c.SDL_Quit();
+        imguiz.SDL_Quit();
 
         self.allocator.destroy(self);
     }

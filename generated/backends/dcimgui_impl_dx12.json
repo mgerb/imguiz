@@ -66,7 +66,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_dx12.h",
-                        "line": 30
+                        "line": 31
                     }
                 },
                 {
@@ -89,7 +89,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_dx12.h",
-                        "line": 31
+                        "line": 32
                     }
                 },
                 {
@@ -106,7 +106,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_dx12.h",
-                        "line": 32
+                        "line": 33
                     }
                 },
                 {
@@ -126,7 +126,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_dx12.h",
-                        "line": 33
+                        "line": 34
                     }
                 },
                 {
@@ -146,7 +146,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_dx12.h",
-                        "line": 34
+                        "line": 35
                     }
                 },
                 {
@@ -166,7 +166,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_dx12.h",
-                        "line": 35
+                        "line": 36
                     }
                 },
                 {
@@ -192,7 +192,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_dx12.h",
-                        "line": 39
+                        "line": 40
                     }
                 },
                 {
@@ -448,7 +448,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_dx12.h",
-                        "line": 43
+                        "line": 44
                     }
                 },
                 {
@@ -471,7 +471,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_dx12.h",
-                        "line": 44
+                        "line": 45
                     }
                 }
             ],
@@ -483,7 +483,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_dx12.h",
-                "line": 28
+                "line": 29
             }
         },
         {
@@ -511,7 +511,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_dx12.h",
-                        "line": 72
+                        "line": 76
                     }
                 },
                 {
@@ -531,7 +531,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_dx12.h",
-                        "line": 73
+                        "line": 77
                     }
                 }
             ],
@@ -545,7 +545,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_dx12.h",
-                "line": 70
+                "line": 74
             }
         }
     ],
@@ -592,7 +592,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_dx12.h",
-                "line": 51
+                "line": 52
             }
         },
         {
@@ -615,7 +615,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_dx12.h",
-                "line": 52
+                "line": 53
             }
         },
         {
@@ -638,7 +638,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_dx12.h",
-                "line": 53
+                "line": 54
             }
         },
         {
@@ -694,7 +694,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_dx12.h",
-                "line": 54
+                "line": 55
             }
         },
         {
@@ -815,7 +815,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_dx12.h",
-                "line": 60
+                "line": 61
             }
         },
         {
@@ -843,7 +843,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_dx12.h",
-                "line": 64
+                "line": 65
             }
         },
         {
@@ -866,7 +866,52 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_dx12.h",
-                "line": 65
+                "line": 66
+            }
+        },
+        {
+            "name": "cImGui_ImplDX12_UpdateTexture",
+            "original_fully_qualified_name": "ImGui_ImplDX12_UpdateTexture",
+            "return_type": {
+                "declaration": "void",
+                "description": {
+                    "kind": "Builtin",
+                    "builtin_type": "void"
+                }
+            },
+            "arguments": [
+                {
+                    "name": "tex",
+                    "type": {
+                        "declaration": "ImTextureData*",
+                        "description": {
+                            "kind": "Pointer",
+                            "inner_type": {
+                                "kind": "User",
+                                "name": "ImTextureData"
+                            }
+                        }
+                    },
+                    "is_array": false,
+                    "is_varargs": false,
+                    "is_instance_pointer": false
+                }
+            ],
+            "is_default_argument_helper": false,
+            "is_manual_helper": false,
+            "is_imstr_helper": false,
+            "has_imstr_helper": false,
+            "is_unformatted_helper": false,
+            "is_static": false,
+            "comments": {
+                "preceding": [
+                    "// (Advanced) Use e.g. if you need to precisely control the timing of texture updates (e.g. for staged rendering), by setting ImDrawData::Textures = NULL to handle this manually."
+                ]
+            },
+            "is_internal": false,
+            "source_location": {
+                "filename": "imgui_impl_dx12.h",
+                "line": 69
             }
         }
     ]

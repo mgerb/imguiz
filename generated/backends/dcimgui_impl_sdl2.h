@@ -57,6 +57,10 @@ CIMGUI_IMPL_API void cImGui_ImplSDL2_Shutdown(void);
 CIMGUI_IMPL_API void cImGui_ImplSDL2_NewFrame(void);
 CIMGUI_IMPL_API bool cImGui_ImplSDL2_ProcessEvent(const SDL_Event* event);
 
+// DPI-related helpers (optional)
+CIMGUI_IMPL_API float cImGui_ImplSDL2_GetContentScaleForWindow(SDL_Window* window);
+CIMGUI_IMPL_API float cImGui_ImplSDL2_GetContentScaleForDisplay(int display_index);
+
 // Gamepad selection automatically starts in AutoFirst mode, picking first available SDL_Gamepad. You may override this.
 // When using manual mode, caller is responsible for opening/closing gamepad.
 typedef enum

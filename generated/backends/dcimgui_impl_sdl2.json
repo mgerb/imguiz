@@ -13,7 +13,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_sdl2.h",
-                        "line": 47
+                        "line": 51
                     }
                 },
                 {
@@ -23,7 +23,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_sdl2.h",
-                        "line": 47
+                        "line": 51
                     }
                 },
                 {
@@ -33,7 +33,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_sdl2.h",
-                        "line": 47
+                        "line": 51
                     }
                 }
             ],
@@ -46,7 +46,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_sdl2.h",
-                "line": 47
+                "line": 51
             }
         }
     ],
@@ -515,6 +515,88 @@
             }
         },
         {
+            "name": "cImGui_ImplSDL2_GetContentScaleForWindow",
+            "original_fully_qualified_name": "ImGui_ImplSDL2_GetContentScaleForWindow",
+            "return_type": {
+                "declaration": "float",
+                "description": {
+                    "kind": "Builtin",
+                    "builtin_type": "float"
+                }
+            },
+            "arguments": [
+                {
+                    "name": "window",
+                    "type": {
+                        "declaration": "SDL_Window*",
+                        "description": {
+                            "kind": "Pointer",
+                            "inner_type": {
+                                "kind": "User",
+                                "name": "SDL_Window"
+                            }
+                        }
+                    },
+                    "is_array": false,
+                    "is_varargs": false,
+                    "is_instance_pointer": false
+                }
+            ],
+            "is_default_argument_helper": false,
+            "is_manual_helper": false,
+            "is_imstr_helper": false,
+            "has_imstr_helper": false,
+            "is_unformatted_helper": false,
+            "is_static": false,
+            "comments": {
+                "preceding": [
+                    "// DPI-related helpers (optional)"
+                ]
+            },
+            "is_internal": false,
+            "source_location": {
+                "filename": "imgui_impl_sdl2.h",
+                "line": 46
+            }
+        },
+        {
+            "name": "cImGui_ImplSDL2_GetContentScaleForDisplay",
+            "original_fully_qualified_name": "ImGui_ImplSDL2_GetContentScaleForDisplay",
+            "return_type": {
+                "declaration": "float",
+                "description": {
+                    "kind": "Builtin",
+                    "builtin_type": "float"
+                }
+            },
+            "arguments": [
+                {
+                    "name": "display_index",
+                    "type": {
+                        "declaration": "int",
+                        "description": {
+                            "kind": "Builtin",
+                            "builtin_type": "int"
+                        }
+                    },
+                    "is_array": false,
+                    "is_varargs": false,
+                    "is_instance_pointer": false
+                }
+            ],
+            "is_default_argument_helper": false,
+            "is_manual_helper": false,
+            "is_imstr_helper": false,
+            "has_imstr_helper": false,
+            "is_unformatted_helper": false,
+            "is_static": false,
+            "is_internal": false,
+            "source_location": {
+                "filename": "imgui_impl_sdl2.h",
+                "line": 47
+            }
+        },
+        {
             "name": "cImGui_ImplSDL2_SetGamepadMode",
             "original_fully_qualified_name": "ImGui_ImplSDL2_SetGamepadMode",
             "return_type": {
@@ -551,7 +633,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_sdl2.h",
-                "line": 48
+                "line": 52
             }
         },
         {
@@ -622,7 +704,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_sdl2.h",
-                "line": 48
+                "line": 52
             }
         }
     ]

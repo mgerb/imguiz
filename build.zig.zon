@@ -37,8 +37,8 @@
     // internet connectivity.
     .dependencies = .{
         .vulkan_headers = .{
-            .url = "git+https://github.com/KhronosGroup/Vulkan-Headers#75ad707a587e1469fb53a901b9b68fe9f6fbc11f",
-            .hash = "N-V-__8AAPJS7wFRVAIGhMZ7cis5e-y5LZfn2KfO5O2jiHGH",
+            .url = "git+https://github.com/KhronosGroup/Vulkan-Headers#a01329f307fa6067da824de9f587f292d761680b",
+            .hash = "N-V-__8AAENI9wHIo_URLJ_ZfwllA6o_VuxahRnqI7iQfhEb",
         },
         .sdl3 = .{
             .url = "https://github.com/libsdl-org/SDL/archive/refs/tags/release-3.2.14.tar.gz",

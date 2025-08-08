@@ -1,4 +1,4 @@
-pub usingnamespace @cImport({
+pub const imguiz = @cImport({
     @cInclude("SDL3/SDL.h");
     @cInclude("SDL3/SDL_vulkan.h");
     @cInclude("dcimgui.h");
