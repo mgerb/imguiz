@@ -16,7 +16,6 @@ const INSTANCE_EXTENSIONS = [_][*:0]const u8{
 
 const DEVICE_EXTENSIONS = [_][*:0]const u8{
     vk.extensions.khr_dynamic_rendering.name,
-    vk.extensions.khr_video_queue.name,
     vk.extensions.khr_synchronization_2.name,
     vk.extensions.khr_swapchain.name,
 };
@@ -25,7 +24,6 @@ pub extern fn vkGetInstanceProcAddr(instance: vk.Instance, procname: [*:0]const 
 
 const QueueAllocation = struct {
     graphics_family: u32,
-    video_encode_family: u32,
 };
 
 pub const DeviceCandidate = struct {
@@ -253,13 +251,10 @@ pub const Vulkan = struct {
         defer allocator.free(propsv);
         for (propsv) |props| {
             if (std.mem.eql(u8, std.mem.span(extension), std.mem.sliceTo(&props.extension_name, 0))) {
-                break;
+                return true;
             }
-        } else {
-            std.log.err("Extension is not supported by device: {s}\n", .{extension});
-            return false;
         }
-        return true;
+        return false;
     }
 
     fn checkDeviceExtensionSupport(
@@ -285,7 +280,6 @@ pub const Vulkan = struct {
         defer allocator.free(families);
 
         var graphics_family: ?u32 = null;
-        var video_encode_family: ?u32 = null;
 
         for (families, 0..) |properties, i| {
             const family: u32 = @intCast(i);
@@ -293,16 +287,11 @@ pub const Vulkan = struct {
             if (graphics_family == null and properties.queue_flags.graphics_bit) {
                 graphics_family = family;
             }
-
-            if (video_encode_family == null and properties.queue_flags.video_encode_bit_khr) {
-                video_encode_family = family;
-            }
         }
 
-        if (graphics_family != null and video_encode_family != null) {
+        if (graphics_family != null) {
             return QueueAllocation{
                 .graphics_family = graphics_family.?,
-                .video_encode_family = video_encode_family.?,
             };
         }
 
@@ -317,17 +306,9 @@ pub const Vulkan = struct {
                 .queue_count = 1,
                 .p_queue_priorities = &priority,
             },
-            .{
-                .queue_family_index = candidate.queues.video_encode_family,
-                .queue_count = 1,
-                .p_queue_priorities = &priority,
-            },
         };
 
-        const queue_count: u32 = if (candidate.queues.graphics_family == candidate.queues.video_encode_family)
-            1
-        else
-            2;
+        const queue_count: u32 = 1;
 
         const synchronization2_features = vk.PhysicalDeviceSynchronization2Features{
             .synchronization_2 = vk.TRUE,
