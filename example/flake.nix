@@ -22,9 +22,25 @@
         };
         zigpkgs = zig.packages.${system};
       in {
+        packages = {
+          zls-custom = pkgs.stdenv.mkDerivation {
+            pname = "zls";
+            version = "0.15.0";
+            src = pkgs.fetchurl {
+              url = "https://builds.zigtools.org/zls-x86_64-linux-0.15.0.tar.xz";
+              sha256 = "sha256-UIv+P9Y30qAvB/P8faiQA1H0BxFrA2hcXa4mtPAaMN4=";
+            };
+            sourceRoot = ".";
+            installPhase = ''
+              mkdir -p $out/bin
+              mv zls $out/bin/
+            '';
+          };
+        };
         devShells.default = pkgs.mkShell {
           buildInputs = with pkgs; [
-            zigpkgs.master
+            zigpkgs."0.15.1"
+            self.packages.${system}.zls-custom
 
             sdl3
             vulkan-loader

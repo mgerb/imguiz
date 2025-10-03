@@ -56,10 +56,10 @@ pub const UI = struct {
         }
         defer imguiz.SDL_Quit();
 
-        var extensions = std.ArrayList([*:0]const u8).init(allocator);
+        var extensions = try std.ArrayList([*:0]const u8).initCapacity(allocator, 0);
         var extensions_count: u32 = 0;
         const sdl_extensions = imguiz.SDL_Vulkan_GetInstanceExtensions(&extensions_count);
-        for (0..extensions_count) |i| try extensions.append(std.mem.span(sdl_extensions[i]));
+        for (0..extensions_count) |i| try extensions.append(allocator, std.mem.span(sdl_extensions[i]));
 
         return extensions;
     }
@@ -136,13 +136,13 @@ pub const UI = struct {
         init_info.Queue = self.vkQueue();
         init_info.PipelineCache = g_PipelineCache;
         init_info.DescriptorPool = self.vkDescriptorPool();
-        init_info.RenderPass = self.vulkan_window.RenderPass;
-        init_info.Subpass = 0;
         init_info.MinImageCount = MIN_IMAGE_COUNT;
         init_info.ImageCount = self.vulkan_window.ImageCount;
-        init_info.MSAASamples = imguiz.VK_SAMPLE_COUNT_1_BIT;
         init_info.Allocator = null;
         init_info.CheckVkResultFn = check_vk_result;
+        init_info.PipelineInfoMain.RenderPass = self.vulkan_window.RenderPass;
+        init_info.PipelineInfoMain.Subpass = 0;
+        init_info.PipelineInfoMain.MSAASamples = imguiz.VK_SAMPLE_COUNT_1_BIT;
         if (!imguiz.cImGui_ImplVulkan_Init(&init_info)) {
             return error.ImGuiVulkanInitFailure;
         }
@@ -210,6 +210,7 @@ pub const UI = struct {
                     fb_width,
                     fb_height,
                     MIN_IMAGE_COUNT,
+                    0,
                 );
                 self.vulkan_window.FrameIndex = 0;
                 self.swapchain_rebuild = false;
@@ -310,7 +311,7 @@ pub const UI = struct {
         var fd = &wd.Frames.Data[wd.FrameIndex];
 
         {
-            const err = try self.vulkan.device.waitForFences(1, @ptrCast(&fd.Fence), imguiz.VK_TRUE, std.math.maxInt(u64));
+            const err = try self.vulkan.device.waitForFences(1, @ptrCast(&fd.Fence), .true, std.math.maxInt(u64));
             check_vk_result(@intFromEnum(err));
             try self.vulkan.device.resetFences(1, @ptrCast(&fd.Fence));
         }
@@ -439,6 +440,7 @@ pub const UI = struct {
             WIDTH,
             HEIGHT,
             MIN_IMAGE_COUNT,
+            0,
         );
     }
 
@@ -481,7 +483,7 @@ pub const UI = struct {
         imguiz.cImGui_ImplVulkanH_DestroyWindow(
             self.vkInstance(),
             self.vkDevice(),
-            @constCast(@ptrCast(&self.vulkan_window)),
+            @ptrCast(@constCast(&self.vulkan_window)),
             null,
         );
         // }

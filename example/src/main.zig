@@ -7,8 +7,8 @@ pub fn main() !void {
     defer _ = gpa.deinit();
     const allocator = gpa.allocator();
 
-    const extensions = try UI.getSDLVulkanExtensions(allocator);
-    defer extensions.deinit();
+    var extensions = try UI.getSDLVulkanExtensions(allocator);
+    defer extensions.deinit(allocator);
     const vulkan = try Vulkan.init(allocator, extensions.items);
     defer vulkan.deinit();
 
