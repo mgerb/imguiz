@@ -1,4 +1,4 @@
-// dear imgui, v1.92.2 WIP
+// dear imgui, v1.92.4 WIP
 // (demo code)
 
 // Help:
@@ -551,11 +551,13 @@ void ImGui::ShowDemoWindow(bool* p_open)
                 ImGui::Checkbox("io.ConfigViewportsNoAutoMerge", &io.ConfigViewportsNoAutoMerge);
                 ImGui::SameLine(); HelpMarker("Set to make all floating imgui windows always create their own viewport. Otherwise, they are merged into the main host viewports when overlapping it.");
                 ImGui::Checkbox("io.ConfigViewportsNoTaskBarIcon", &io.ConfigViewportsNoTaskBarIcon);
-                ImGui::SameLine(); HelpMarker("Toggling this at runtime is normally unsupported (most platform backends won't refresh the task bar icon state right away).");
+                ImGui::SameLine(); HelpMarker("(note: some platform backends may not reflect a change of this value for existing viewports, and may need the viewport to be recreated)");
                 ImGui::Checkbox("io.ConfigViewportsNoDecoration", &io.ConfigViewportsNoDecoration);
-                ImGui::SameLine(); HelpMarker("Toggling this at runtime is normally unsupported (most platform backends won't refresh the decoration right away).");
+                ImGui::SameLine(); HelpMarker("(note: some platform backends may not reflect a change of this value for existing viewports, and may need the viewport to be recreated)");
                 ImGui::Checkbox("io.ConfigViewportsNoDefaultParent", &io.ConfigViewportsNoDefaultParent);
-                ImGui::SameLine(); HelpMarker("Toggling this at runtime is normally unsupported (most platform backends won't refresh the parenting right away).");
+                ImGui::SameLine(); HelpMarker("(note: some platform backends may not reflect a change of this value for existing viewports, and may need the viewport to be recreated)");
+                ImGui::Checkbox("io.ConfigViewportsPlatformFocusSetsImGuiFocus", &io.ConfigViewportsPlatformFocusSetsImGuiFocus);
+                ImGui::SameLine(); HelpMarker("When a platform window is focused (e.g. using Alt+Tab, clicking Platform Title Bar), apply corresponding focus on imgui windows (may clear focus/active id from imgui windows location in other platform windows). In principle this is better enabled but we provide an opt-out, because some Linux window managers tend to eagerly focus windows (e.g. on mouse hover, or even a simple window pos/size change).");
                 ImGui::Unindent();
             }
 
@@ -638,6 +640,7 @@ void ImGui::ShowDemoWindow(bool* p_open)
             ImGui::CheckboxFlags("io.BackendFlags: HasSetMousePos",         &io.BackendFlags, ImGuiBackendFlags_HasSetMousePos);
             ImGui::CheckboxFlags("io.BackendFlags: PlatformHasViewports",   &io.BackendFlags, ImGuiBackendFlags_PlatformHasViewports);
             ImGui::CheckboxFlags("io.BackendFlags: HasMouseHoveredViewport",&io.BackendFlags, ImGuiBackendFlags_HasMouseHoveredViewport);
+            ImGui::CheckboxFlags("io.BackendFlags: HasParentViewport",      &io.BackendFlags, ImGuiBackendFlags_HasParentViewport);
             ImGui::CheckboxFlags("io.BackendFlags: RendererHasVtxOffset",   &io.BackendFlags, ImGuiBackendFlags_RendererHasVtxOffset);
             ImGui::CheckboxFlags("io.BackendFlags: RendererHasTextures",    &io.BackendFlags, ImGuiBackendFlags_RendererHasTextures);
             ImGui::CheckboxFlags("io.BackendFlags: RendererHasViewports",   &io.BackendFlags, ImGuiBackendFlags_RendererHasViewports);
@@ -3310,7 +3313,7 @@ static void DemoWindowWidgetsSelectionAndMultiSelect(ImGuiDemoWindowData* demo_d
                     ImGui::BeginTable("##Split", 2, ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_NoPadOuterX);
                     ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch, 0.70f);
                     ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch, 0.30f);
-                    //ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacingY, 0.0f);
+                    //ImGui::PushStyleVarY(ImGuiStyleVar_ItemSpacing, 0.0f);
                 }
 
                 ImGuiListClipper clipper;
@@ -3789,6 +3792,8 @@ static void DemoWindowWidgetsTextInput()
             static ImGuiInputTextFlags flags = ImGuiInputTextFlags_AllowTabInput;
             HelpMarker("You can use the ImGuiInputTextFlags_CallbackResize facility if you need to wire InputTextMultiline() to a dynamic string type. See misc/cpp/imgui_stdlib.h for an example. (This is not demonstrated in imgui_demo.cpp because we don't want to include <string> in here)");
             ImGui::CheckboxFlags("ImGuiInputTextFlags_ReadOnly", &flags, ImGuiInputTextFlags_ReadOnly);
+            ImGui::CheckboxFlags("ImGuiInputTextFlags_WordWrap", &flags, ImGuiInputTextFlags_WordWrap);
+            ImGui::SameLine(); HelpMarker("Feature is currently in Beta. Please read comments in imgui.h");
             ImGui::CheckboxFlags("ImGuiInputTextFlags_AllowTabInput", &flags, ImGuiInputTextFlags_AllowTabInput);
             ImGui::SameLine(); HelpMarker("When _AllowTabInput is set, passing through the widget with Tabbing doesn't automatically activate it, in order to also cycling through subsequent widgets.");
             ImGui::CheckboxFlags("ImGuiInputTextFlags_CtrlEnterForNewLine", &flags, ImGuiInputTextFlags_CtrlEnterForNewLine);
@@ -3936,10 +3941,13 @@ static void DemoWindowWidgetsTextInput()
             // For this demo we are using ImVector as a string container.
             // Note that because we need to store a terminating zero character, our size/capacity are 1 more
             // than usually reported by a typical string class.
+            static ImGuiInputTextFlags flags = ImGuiInputTextFlags_None;
+            ImGui::CheckboxFlags("ImGuiInputTextFlags_WordWrap", &flags, ImGuiInputTextFlags_WordWrap);
+
             static ImVector<char> my_str;
             if (my_str.empty())
                 my_str.push_back(0);
-            Funcs::MyInputTextMultiline("##MyStr", &my_str, ImVec2(-FLT_MIN, ImGui::GetTextLineHeight() * 16));
+            Funcs::MyInputTextMultiline("##MyStr", &my_str, ImVec2(-FLT_MIN, ImGui::GetTextLineHeight() * 16), flags);
             ImGui::Text("Data: %p\nSize: %d\nCapacity: %d", (void*)my_str.begin(), my_str.size(), my_str.capacity());
             ImGui::TreePop();
         }
@@ -5263,7 +5271,7 @@ static void DemoWindowPopups()
     // Typical use for regular windows:
     //   bool my_tool_is_active = false; if (ImGui::Button("Open")) my_tool_is_active = true; [...] if (my_tool_is_active) Begin("My Tool", &my_tool_is_active) { [...] } End();
     // Typical use for popups:
-    //   if (ImGui::Button("Open")) ImGui::OpenPopup("MyPopup"); if (ImGui::BeginPopup("MyPopup") { [...] EndPopup(); }
+    //   if (ImGui::Button("Open")) ImGui::OpenPopup("MyPopup"); if (ImGui::BeginPopup("MyPopup")) { [...] EndPopup(); }
 
     // With popups we have to go through a library call (here OpenPopup) to manipulate the visibility state.
     // This may be a bit confusing at first but it should quickly make sense. Follow on the examples below.
@@ -5849,7 +5857,7 @@ static void DemoWindowTables()
         ImGui::SameLine(); ImGui::RadioButton("Text", &contents_type, CT_Text);
         ImGui::SameLine(); ImGui::RadioButton("FillButton", &contents_type, CT_FillButton);
         ImGui::Checkbox("Display headers", &display_headers);
-        ImGui::CheckboxFlags("ImGuiTableFlags_NoBordersInBody", &flags, ImGuiTableFlags_NoBordersInBody); ImGui::SameLine(); HelpMarker("Disable vertical borders in columns Body (borders will always appear in Headers");
+        ImGui::CheckboxFlags("ImGuiTableFlags_NoBordersInBody", &flags, ImGuiTableFlags_NoBordersInBody); ImGui::SameLine(); HelpMarker("Disable vertical borders in columns Body (borders will always appear in Headers)");
         PopStyleCompact();
 
         if (ImGui::BeginTable("table1", 3, flags))
@@ -7342,7 +7350,7 @@ static void DemoWindowTables()
                 ImGui::CheckboxFlags("ImGuiTableFlags_BordersH", &flags, ImGuiTableFlags_BordersH);
                 ImGui::CheckboxFlags("ImGuiTableFlags_BordersOuterH", &flags, ImGuiTableFlags_BordersOuterH);
                 ImGui::CheckboxFlags("ImGuiTableFlags_BordersInnerH", &flags, ImGuiTableFlags_BordersInnerH);
-                ImGui::CheckboxFlags("ImGuiTableFlags_NoBordersInBody", &flags, ImGuiTableFlags_NoBordersInBody); ImGui::SameLine(); HelpMarker("Disable vertical borders in columns Body (borders will always appear in Headers");
+                ImGui::CheckboxFlags("ImGuiTableFlags_NoBordersInBody", &flags, ImGuiTableFlags_NoBordersInBody); ImGui::SameLine(); HelpMarker("Disable vertical borders in columns Body (borders will always appear in Headers)");
                 ImGui::CheckboxFlags("ImGuiTableFlags_NoBordersInBodyUntilResize", &flags, ImGuiTableFlags_NoBordersInBodyUntilResize); ImGui::SameLine(); HelpMarker("Disable vertical borders in columns Body until hovered for resize (borders will always appear in Headers)");
                 ImGui::TreePop();
             }
@@ -8180,6 +8188,9 @@ void ImGui::ShowAboutWindow(bool* p_open)
         ImGui::Separator();
         ImGui::Text("sizeof(size_t): %d, sizeof(ImDrawIdx): %d, sizeof(ImDrawVert): %d", (int)sizeof(size_t), (int)sizeof(ImDrawIdx), (int)sizeof(ImDrawVert));
         ImGui::Text("define: __cplusplus=%d", (int)__cplusplus);
+#ifdef IMGUI_ENABLE_TEST_ENGINE
+        ImGui::Text("define: IMGUI_ENABLE_TEST_ENGINE");
+#endif
 #ifdef IMGUI_DISABLE_OBSOLETE_FUNCTIONS
         ImGui::Text("define: IMGUI_DISABLE_OBSOLETE_FUNCTIONS");
 #endif
@@ -8288,6 +8299,7 @@ void ImGui::ShowAboutWindow(bool* p_open)
         if (io.BackendFlags & ImGuiBackendFlags_HasSetMousePos)         ImGui::Text(" HasSetMousePos");
         if (io.BackendFlags & ImGuiBackendFlags_PlatformHasViewports)   ImGui::Text(" PlatformHasViewports");
         if (io.BackendFlags & ImGuiBackendFlags_HasMouseHoveredViewport)ImGui::Text(" HasMouseHoveredViewport");
+        if (io.BackendFlags & ImGuiBackendFlags_HasParentViewport)      ImGui::Text(" HasParentViewport");
         if (io.BackendFlags & ImGuiBackendFlags_RendererHasVtxOffset)   ImGui::Text(" RendererHasVtxOffset");
         if (io.BackendFlags & ImGuiBackendFlags_RendererHasTextures)    ImGui::Text(" RendererHasTextures");
         if (io.BackendFlags & ImGuiBackendFlags_RendererHasViewports)   ImGui::Text(" RendererHasViewports");
@@ -8323,22 +8335,34 @@ void ImGui::ShowAboutWindow(bool* p_open)
 //-----------------------------------------------------------------------------
 
 // Demo helper function to select among default colors. See ShowStyleEditor() for more advanced options.
-// Here we use the simplified Combo() api that packs items into a single literal string.
-// Useful for quick combo boxes where the choices are known locally.
 bool ImGui::ShowStyleSelector(const char* label)
 {
+    // FIXME: This is a bit tricky to get right as style are functions, they don't register a name nor the fact that one is active.
+    // So we keep track of last active one among our limited selection.
     static int style_idx = -1;
-    if (ImGui::Combo(label, &style_idx, "Dark\0Light\0Classic\0"))
+    const char* style_names[] = { "Dark", "Light", "Classic" };
+    bool ret = false;
+    if (ImGui::BeginCombo(label, (style_idx >= 0 && style_idx < IM_ARRAYSIZE(style_names)) ? style_names[style_idx] : ""))
     {
-        switch (style_idx)
+        for (int n = 0; n < IM_ARRAYSIZE(style_names); n++)
         {
-        case 0: ImGui::StyleColorsDark(); break;
-        case 1: ImGui::StyleColorsLight(); break;
-        case 2: ImGui::StyleColorsClassic(); break;
+            if (ImGui::Selectable(style_names[n], style_idx == n, ImGuiSelectableFlags_SelectOnNav))
+            {
+                style_idx = n;
+                ret = true;
+                switch (style_idx)
+                {
+                case 0: ImGui::StyleColorsDark(); break;
+                case 1: ImGui::StyleColorsLight(); break;
+                case 2: ImGui::StyleColorsClassic(); break;
+                }
+            }
+            else if (style_idx == n)
+                ImGui::SetItemDefaultFocus();
         }
-        return true;
+        ImGui::EndCombo();
     }
-    return false;
+    return ret;
 }
 
 static const char* GetTreeLinesFlagsName(ImGuiTreeNodeFlags flags)
@@ -8424,7 +8448,6 @@ void ImGui::ShowStyleEditor(ImGuiStyle* ref)
             SliderFloat2("ItemInnerSpacing", (float*)&style.ItemInnerSpacing, 0.0f, 20.0f, "%.0f");
             SliderFloat2("TouchExtraPadding", (float*)&style.TouchExtraPadding, 0.0f, 10.0f, "%.0f");
             SliderFloat("IndentSpacing", &style.IndentSpacing, 0.0f, 30.0f, "%.0f");
-            SliderFloat("ScrollbarSize", &style.ScrollbarSize, 1.0f, 20.0f, "%.0f");
             SliderFloat("GrabMinSize", &style.GrabMinSize, 1.0f, 20.0f, "%.0f");
 
             SeparatorText("Borders");
@@ -8438,8 +8461,12 @@ void ImGui::ShowStyleEditor(ImGuiStyle* ref)
             SliderFloat("ChildRounding", &style.ChildRounding, 0.0f, 12.0f, "%.0f");
             SliderFloat("FrameRounding", &style.FrameRounding, 0.0f, 12.0f, "%.0f");
             SliderFloat("PopupRounding", &style.PopupRounding, 0.0f, 12.0f, "%.0f");
-            SliderFloat("ScrollbarRounding", &style.ScrollbarRounding, 0.0f, 12.0f, "%.0f");
             SliderFloat("GrabRounding", &style.GrabRounding, 0.0f, 12.0f, "%.0f");
+
+            SeparatorText("Scrollbar");
+            SliderFloat("ScrollbarSize", &style.ScrollbarSize, 1.0f, 20.0f, "%.0f");
+            SliderFloat("ScrollbarRounding", &style.ScrollbarRounding, 0.0f, 12.0f, "%.0f");
+            SliderFloat("ScrollbarPadding", &style.ScrollbarPadding, 0.0f, 10.0f, "%.0f");
 
             SeparatorText("Tabs");
             SliderFloat("TabBorderSize", &style.TabBorderSize, 0.0f, 1.0f, "%.0f");
@@ -8492,6 +8519,8 @@ void ImGui::ShowStyleEditor(ImGuiStyle* ref)
             SliderFloat("ImageBorderSize", &style.ImageBorderSize, 0.0f, 1.0f, "%.0f");
 
             SeparatorText("Docking");
+            //SetCursorPosX(GetCursorPosX() + CalcItemWidth() - GetFrameHeight());
+            Checkbox("DockingNodeHasCloseButton", &style.DockingNodeHasCloseButton);
             SliderFloat("DockingSeparatorSize", &style.DockingSeparatorSize, 0.0f, 12.0f, "%.0f");
 
             SeparatorText("Tooltips");
@@ -9387,10 +9416,9 @@ static void ShowExampleAppLayout(bool* p_open)
             ImGui::BeginChild("left pane", ImVec2(150, 0), ImGuiChildFlags_Borders | ImGuiChildFlags_ResizeX);
             for (int i = 0; i < 100; i++)
             {
-                // FIXME: Good candidate to use ImGuiSelectableFlags_SelectOnNav
                 char label[128];
                 sprintf(label, "MyObject %d", i);
-                if (ImGui::Selectable(label, selected == i))
+                if (ImGui::Selectable(label, selected == i, ImGuiSelectableFlags_SelectOnNav))
                     selected = i;
             }
             ImGui::EndChild();
@@ -9742,7 +9770,7 @@ static void ShowExampleAppConstrainedResize(bool* p_open)
         IMGUI_DEMO_MARKER("Examples/Constrained Resizing window");
         if (ImGui::GetIO().KeyShift)
         {
-            // Display a dummy viewport (in your real app you would likely use ImageButton() to display a texture.
+            // Display a dummy viewport (in your real app you would likely use ImageButton() to display a texture)
             ImVec2 avail_size = ImGui::GetContentRegionAvail();
             ImVec2 pos = ImGui::GetCursorScreenPos();
             ImGui::ColorButton("viewport", ImVec4(0.5f, 0.2f, 0.5f, 1.0f), ImGuiColorEditFlags_NoTooltip | ImGuiColorEditFlags_NoDragDrop, avail_size);
