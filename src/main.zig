@@ -2,15 +2,8 @@ const std = @import("std");
 
 const TMP_DIR = "tmp";
 
-fn cloneDearBindings(allocator: std.mem.Allocator) !void {
-    const term = runCommand(&.{ "git", "clone", "https://github.com/dearimgui/dear_bindings" }, allocator);
-    std.debug.print("term: {any}\n", .{term});
-}
-
-fn cloneDearImgui(allocator: std.mem.Allocator) !void {
-    const term = runCommand(&.{ "git", "clone", "https://github.com/ocornut/imgui" }, allocator);
-    std.debug.print("term: {any}\n", .{term});
-}
+const IMGUI_VERSION = "v1.92.7-docking";
+const DEAR_BINDINGS_VERSION = "05f6a235c2d1963b17d98730b6a9d09f705e001c";
 
 fn runCommand(opts: struct {
     args: []const []const u8,
@@ -55,13 +48,19 @@ pub fn main() !void {
         }
     };
 
-    _ = try runCommand(.{
+    try runCommand(.{
         .args = &.{ "git", "clone", "https://github.com/dearimgui/dear_bindings" },
         .allocator = allocator,
         .cwd = TMP_DIR,
     });
 
-    _ = try runCommand(.{
+    try runCommand(.{
+        .args = &.{ "git", "checkout", DEAR_BINDINGS_VERSION },
+        .allocator = allocator,
+        .cwd = TMP_DIR ++ "/dear_bindings",
+    });
+
+    try runCommand(.{
         .args = &.{
             "git",
             "clone",
@@ -74,39 +73,45 @@ pub fn main() !void {
         .cwd = TMP_DIR,
     });
 
-    _ = try runCommand(.{
+    try runCommand(.{
+        .args = &.{ "git", "checkout", IMGUI_VERSION },
+        .allocator = allocator,
+        .cwd = TMP_DIR ++ "/imgui",
+    });
+
+    try runCommand(.{
         .args = &.{ "chmod", "+x", "BuildAllBindings.sh" },
         .allocator = allocator,
         .cwd = TMP_DIR ++ "/dear_bindings",
     });
 
-    _ = try runCommand(.{
+    try runCommand(.{
         .args = &.{ "bash", "BuildAllBindings.sh" },
         .allocator = allocator,
         .cwd = TMP_DIR ++ "/dear_bindings",
     });
 
-    _ = try runCommand(.{
+    try runCommand(.{
         .args = &.{ "sh", "-c", "cp " ++ TMP_DIR ++ "/imgui/*.h " ++ TMP_DIR ++ "/dear_bindings/generated" },
         .allocator = allocator,
     });
 
-    _ = try runCommand(.{
+    try runCommand(.{
         .args = &.{ "sh", "-c", "cp " ++ TMP_DIR ++ "/imgui/*.cpp " ++ TMP_DIR ++ "/dear_bindings/generated" },
         .allocator = allocator,
     });
 
-    _ = try runCommand(.{
+    try runCommand(.{
         .args = &.{ "sh", "-c", "cp -R " ++ TMP_DIR ++ "/imgui/backends " ++ TMP_DIR ++ "/dear_bindings/generated" },
         .allocator = allocator,
     });
 
-    _ = try runCommand(.{
+    try runCommand(.{
         .args = &.{ "sh", "-c", "cp -R " ++ TMP_DIR ++ "/imgui/misc " ++ TMP_DIR ++ "/dear_bindings/generated" },
         .allocator = allocator,
     });
 
-    _ = try runCommand(.{
+    try runCommand(.{
         .args = &.{ "sh", "-c", "cp -R " ++ TMP_DIR ++ "/dear_bindings/generated ./" },
         .allocator = allocator,
     });

@@ -45,9 +45,15 @@ pub fn build(b: *std.Build) void {
         });
 
         const vulkan = b.dependency("vulkan_headers", .{});
-        const sdl3 = b.dependency("sdl3", .{});
         module.addIncludePath(vulkan.path("include"));
-        module.addIncludePath(sdl3.path("include"));
+
+        // SDL3
+        const sdl = b.dependency("sdl", .{
+            .target = target,
+            .optimize = optimize,
+            .linkage = .static,
+        });
+        module.linkLibrary(sdl.artifact("SDL3"));
 
         module.addIncludePath(b.path("generated"));
         module.addIncludePath(b.path("generated/backends"));

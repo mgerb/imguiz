@@ -16,10 +16,12 @@ pub fn build(b: *std.Build) void {
         .use_llvm = true,
     });
 
-    const imguiz = b.dependency("imguiz", .{});
+    const imguiz = b.dependency("imguiz", .{
+        .target = target,
+        .optimize = optimize,
+    });
     exe.root_module.addImport("imguiz", imguiz.module("imguiz"));
 
-    exe.linkSystemLibrary("SDL3");
     exe.linkSystemLibrary("vulkan");
 
     const vulkan = b.dependency("vulkan", .{

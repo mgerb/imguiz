@@ -154,7 +154,7 @@ pub const Vulkan = struct {
             .pool_size_count = 1,
         };
 
-        // used for sdl window
+        // Used for SDL window.
         const descriptor_pool = try device.createDescriptorPool(&pool_info, null);
         errdefer device.destroyDescriptorPool(descriptor_pool, null);
 
@@ -164,8 +164,6 @@ pub const Vulkan = struct {
         }, null);
         errdefer device.destroyCommandPool(command_pool, null);
 
-        // We use an allocator here because we don't want the
-        // reference to change when we return this object.
         const self = try allocator.create(Self);
         self.* = Self{
             .allocator = allocator,

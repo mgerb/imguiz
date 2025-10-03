@@ -90,7 +90,7 @@
                     }
                 },
                 {
-                    "name": "SamplerDefault",
+                    "name": "SamplerLinear",
                     "is_array": false,
                     "is_anonymous": false,
                     "type": {
@@ -110,6 +110,26 @@
                     }
                 },
                 {
+                    "name": "SamplerNearest",
+                    "is_array": false,
+                    "is_anonymous": false,
+                    "type": {
+                        "declaration": "ID3D11SamplerState*",
+                        "description": {
+                            "kind": "Pointer",
+                            "inner_type": {
+                                "kind": "User",
+                                "name": "ID3D11SamplerState"
+                            }
+                        }
+                    },
+                    "is_internal": false,
+                    "source_location": {
+                        "filename": "imgui_impl_dx11.h",
+                        "line": 49
+                    }
+                },
+                {
                     "name": "VertexConstantBuffer",
                     "is_array": false,
                     "is_anonymous": false,
@@ -126,7 +146,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_dx11.h",
-                        "line": 49
+                        "line": 50
                     }
                 }
             ],
@@ -379,7 +399,7 @@
             "is_static": false,
             "comments": {
                 "preceding": [
-                    "// (Advanced) Use e.g. if you need to precisely control the timing of texture updates (e.g. for staged rendering), by setting ImDrawData::Textures = NULL to handle this manually."
+                    "// (Advanced) Use e.g. if you need to precisely control the timing of texture updates (e.g. for staged rendering), by setting ImDrawData::Textures = nullptr to handle this manually."
                 ]
             },
             "is_internal": false,

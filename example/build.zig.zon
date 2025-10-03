@@ -45,7 +45,7 @@
         },
         .vulkan = .{
             .url = "https://github.com/Snektron/vulkan-zig/archive/zig-0.15-compat.tar.gz",
-            .hash = "vulkan-0.0.0-r7Ytx6hBAwBUnt0XA-uOkR2hda4fAHFhQITNTgJpnFkY",
+            .hash = "vulkan-0.0.0-r7Ytx6FIAwD3QyrrJhvObO0YSZ6WEkMGSCPKbhM__HFd",
         },
     },
 

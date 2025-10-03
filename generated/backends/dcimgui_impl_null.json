@@ -1,0 +1,309 @@
+{
+    "defines": [],
+    "enums": [],
+    "typedefs": [
+        {
+            "name": "ImDrawIdx",
+            "type": {
+                "declaration": "unsigned short",
+                "description": {
+                    "kind": "Builtin",
+                    "builtin_type": "unsigned_short"
+                }
+            },
+            "comments": {
+                "attached": "// Default: 16-bit (for maximum compatibility with renderer backends)"
+            },
+            "conditionals": [
+                {
+                    "condition": "ifndef",
+                    "expression": "ImDrawIdx"
+                }
+            ],
+            "is_internal": false,
+            "source_location": {
+                "filename": "imgui_impl_null.h"
+            }
+        }
+    ],
+    "structs": [
+        {
+            "name": "ImDrawData",
+            "original_fully_qualified_name": "ImDrawData",
+            "kind": "struct",
+            "by_value": false,
+            "forward_declaration": true,
+            "is_anonymous": false,
+            "fields": [],
+            "is_internal": false,
+            "source_location": {
+                "filename": "imgui_impl_null.h",
+                "line": 1
+            }
+        }
+    ],
+    "functions": [
+        {
+            "name": "cImGui_ImplNull_Init",
+            "original_fully_qualified_name": "ImGui_ImplNull_Init",
+            "return_type": {
+                "declaration": "bool",
+                "description": {
+                    "kind": "Builtin",
+                    "builtin_type": "bool"
+                }
+            },
+            "arguments": [],
+            "is_default_argument_helper": false,
+            "is_manual_helper": false,
+            "is_imstr_helper": false,
+            "has_imstr_helper": false,
+            "is_unformatted_helper": false,
+            "is_static": false,
+            "comments": {
+                "preceding": [
+                    "// Null = NullPlatform + NullRender"
+                ]
+            },
+            "is_internal": false,
+            "source_location": {
+                "filename": "imgui_impl_null.h",
+                "line": 19
+            }
+        },
+        {
+            "name": "cImGui_ImplNull_Shutdown",
+            "original_fully_qualified_name": "ImGui_ImplNull_Shutdown",
+            "return_type": {
+                "declaration": "void",
+                "description": {
+                    "kind": "Builtin",
+                    "builtin_type": "void"
+                }
+            },
+            "arguments": [],
+            "is_default_argument_helper": false,
+            "is_manual_helper": false,
+            "is_imstr_helper": false,
+            "has_imstr_helper": false,
+            "is_unformatted_helper": false,
+            "is_static": false,
+            "is_internal": false,
+            "source_location": {
+                "filename": "imgui_impl_null.h",
+                "line": 20
+            }
+        },
+        {
+            "name": "cImGui_ImplNull_NewFrame",
+            "original_fully_qualified_name": "ImGui_ImplNull_NewFrame",
+            "return_type": {
+                "declaration": "void",
+                "description": {
+                    "kind": "Builtin",
+                    "builtin_type": "void"
+                }
+            },
+            "arguments": [],
+            "is_default_argument_helper": false,
+            "is_manual_helper": false,
+            "is_imstr_helper": false,
+            "has_imstr_helper": false,
+            "is_unformatted_helper": false,
+            "is_static": false,
+            "is_internal": false,
+            "source_location": {
+                "filename": "imgui_impl_null.h",
+                "line": 21
+            }
+        },
+        {
+            "name": "cImGui_ImplNullPlatform_Init",
+            "original_fully_qualified_name": "ImGui_ImplNullPlatform_Init",
+            "return_type": {
+                "declaration": "bool",
+                "description": {
+                    "kind": "Builtin",
+                    "builtin_type": "bool"
+                }
+            },
+            "arguments": [],
+            "is_default_argument_helper": false,
+            "is_manual_helper": false,
+            "is_imstr_helper": false,
+            "has_imstr_helper": false,
+            "is_unformatted_helper": false,
+            "is_static": false,
+            "comments": {
+                "preceding": [
+                    "// Null platform only (single screen, fixed timestep, no inputs)"
+                ]
+            },
+            "is_internal": false,
+            "source_location": {
+                "filename": "imgui_impl_null.h",
+                "line": 24
+            }
+        },
+        {
+            "name": "cImGui_ImplNullPlatform_Shutdown",
+            "original_fully_qualified_name": "ImGui_ImplNullPlatform_Shutdown",
+            "return_type": {
+                "declaration": "void",
+                "description": {
+                    "kind": "Builtin",
+                    "builtin_type": "void"
+                }
+            },
+            "arguments": [],
+            "is_default_argument_helper": false,
+            "is_manual_helper": false,
+            "is_imstr_helper": false,
+            "has_imstr_helper": false,
+            "is_unformatted_helper": false,
+            "is_static": false,
+            "is_internal": false,
+            "source_location": {
+                "filename": "imgui_impl_null.h",
+                "line": 25
+            }
+        },
+        {
+            "name": "cImGui_ImplNullPlatform_NewFrame",
+            "original_fully_qualified_name": "ImGui_ImplNullPlatform_NewFrame",
+            "return_type": {
+                "declaration": "void",
+                "description": {
+                    "kind": "Builtin",
+                    "builtin_type": "void"
+                }
+            },
+            "arguments": [],
+            "is_default_argument_helper": false,
+            "is_manual_helper": false,
+            "is_imstr_helper": false,
+            "has_imstr_helper": false,
+            "is_unformatted_helper": false,
+            "is_static": false,
+            "is_internal": false,
+            "source_location": {
+                "filename": "imgui_impl_null.h",
+                "line": 26
+            }
+        },
+        {
+            "name": "cImGui_ImplNullRender_Init",
+            "original_fully_qualified_name": "ImGui_ImplNullRender_Init",
+            "return_type": {
+                "declaration": "bool",
+                "description": {
+                    "kind": "Builtin",
+                    "builtin_type": "bool"
+                }
+            },
+            "arguments": [],
+            "is_default_argument_helper": false,
+            "is_manual_helper": false,
+            "is_imstr_helper": false,
+            "has_imstr_helper": false,
+            "is_unformatted_helper": false,
+            "is_static": false,
+            "comments": {
+                "preceding": [
+                    "// Null renderer only (no output)"
+                ]
+            },
+            "is_internal": false,
+            "source_location": {
+                "filename": "imgui_impl_null.h",
+                "line": 29
+            }
+        },
+        {
+            "name": "cImGui_ImplNullRender_Shutdown",
+            "original_fully_qualified_name": "ImGui_ImplNullRender_Shutdown",
+            "return_type": {
+                "declaration": "void",
+                "description": {
+                    "kind": "Builtin",
+                    "builtin_type": "void"
+                }
+            },
+            "arguments": [],
+            "is_default_argument_helper": false,
+            "is_manual_helper": false,
+            "is_imstr_helper": false,
+            "has_imstr_helper": false,
+            "is_unformatted_helper": false,
+            "is_static": false,
+            "is_internal": false,
+            "source_location": {
+                "filename": "imgui_impl_null.h",
+                "line": 30
+            }
+        },
+        {
+            "name": "cImGui_ImplNullRender_NewFrame",
+            "original_fully_qualified_name": "ImGui_ImplNullRender_NewFrame",
+            "return_type": {
+                "declaration": "void",
+                "description": {
+                    "kind": "Builtin",
+                    "builtin_type": "void"
+                }
+            },
+            "arguments": [],
+            "is_default_argument_helper": false,
+            "is_manual_helper": false,
+            "is_imstr_helper": false,
+            "has_imstr_helper": false,
+            "is_unformatted_helper": false,
+            "is_static": false,
+            "is_internal": false,
+            "source_location": {
+                "filename": "imgui_impl_null.h",
+                "line": 31
+            }
+        },
+        {
+            "name": "cImGui_ImplNullRender_RenderDrawData",
+            "original_fully_qualified_name": "ImGui_ImplNullRender_RenderDrawData",
+            "return_type": {
+                "declaration": "void",
+                "description": {
+                    "kind": "Builtin",
+                    "builtin_type": "void"
+                }
+            },
+            "arguments": [
+                {
+                    "name": "draw_data",
+                    "type": {
+                        "declaration": "ImDrawData*",
+                        "description": {
+                            "kind": "Pointer",
+                            "inner_type": {
+                                "kind": "User",
+                                "name": "ImDrawData"
+                            }
+                        }
+                    },
+                    "is_array": false,
+                    "is_varargs": false,
+                    "is_instance_pointer": false
+                }
+            ],
+            "is_default_argument_helper": false,
+            "is_manual_helper": false,
+            "is_imstr_helper": false,
+            "has_imstr_helper": false,
+            "is_unformatted_helper": false,
+            "is_static": false,
+            "is_internal": false,
+            "source_location": {
+                "filename": "imgui_impl_null.h",
+                "line": 32
+            }
+        }
+    ]
+}

@@ -14,6 +14,18 @@ var g_PipelineCache: imguiz.VkPipelineCache = std.mem.zeroes(imguiz.VkPipelineCa
 
 const SDL_INIT_FLAGS = imguiz.SDL_INIT_VIDEO | imguiz.SDL_INIT_GAMEPAD;
 
+fn initSDL() !void {
+    if (!imguiz.SDL_SetHint(imguiz.SDL_HINT_VIDEO_DRIVER, "wayland")) {
+        std.debug.print("SDL_SetHint failed: {s}\n", .{imguiz.SDL_GetError()});
+        return error.SDL_SetHintFailure;
+    }
+
+    if (!imguiz.SDL_Init(SDL_INIT_FLAGS)) {
+        std.debug.print("SDL_Init failed: {s}\n", .{imguiz.SDL_GetError()});
+        return error.SDL_initFailure;
+    }
+}
+
 pub const UI = struct {
     const Self = @This();
 
@@ -25,35 +37,35 @@ pub const UI = struct {
     vulkan_window: imguiz.ImGui_ImplVulkanH_Window = std.mem.zeroes(imguiz.ImGui_ImplVulkanH_Window),
     swapchain_rebuild: bool = false,
 
-    /// Init SDL and return new UI instance
+    /// Init SDL and return new UI instance.
     pub fn init(
         allocator: std.mem.Allocator,
         vulkan: *Vulkan,
     ) !*Self {
         const self = try allocator.create(Self);
+        errdefer allocator.destroy(self);
 
         self.* = Self{
             .allocator = allocator,
             .vulkan = vulkan,
         };
 
-        if (!imguiz.SDL_Init(SDL_INIT_FLAGS)) {
-            return error.SDL_initFailure;
-        }
+        try initSDL();
 
         const version = imguiz.SDL_GetVersion();
         std.debug.print("SDL version: {}\n", .{version});
+        if (imguiz.SDL_GetCurrentVideoDriver()) |driver| {
+            std.debug.print("SDL video driver: {s}\n", .{driver});
+        }
 
         try self.initVulkan();
 
         return self;
     }
 
-    /// Caller owns memory
+    /// Caller owns the memory.
     pub fn getSDLVulkanExtensions(allocator: std.mem.Allocator) !std.ArrayList([*:0]const u8) {
-        if (!imguiz.SDL_Init(SDL_INIT_FLAGS)) {
-            return error.SDL_initFailure;
-        }
+        try initSDL();
         defer imguiz.SDL_Quit();
 
         var extensions = try std.ArrayList([*:0]const u8).initCapacity(allocator, 0);
@@ -76,9 +88,11 @@ pub const UI = struct {
         var surface: imguiz.VkSurfaceKHR = undefined;
 
         if (!imguiz.SDL_Vulkan_CreateSurface(self.window, self.vkInstance(), null, &surface)) {
+            std.debug.print("SDL_Vulkan_CreateSurface failed: {s}\n", .{imguiz.SDL_GetError()});
             return error.SDL_Vulkan_CreateSurfaceFailure;
         }
         self.surface = surface;
+        errdefer self.vulkan.instance.destroySurfaceKHR(@enumFromInt(@intFromPtr(surface)), null);
 
         if (!imguiz.cImGui_ImplVulkan_LoadFunctions(@bitCast(API_VERSION), loader)) {
             return error.ImGuiVulkanLoadFailure;
@@ -394,7 +408,16 @@ pub const UI = struct {
     fn setupVulkanWindow(self: *Self) !void {
         self.vulkan_window = .{
             .Surface = self.surface.?,
-            .ClearEnable = true,
+            .AttachmentDesc = .{
+                .format = imguiz.VK_FORMAT_UNDEFINED,
+                .samples = imguiz.VK_SAMPLE_COUNT_1_BIT,
+                .loadOp = imguiz.VK_ATTACHMENT_LOAD_OP_CLEAR,
+                .storeOp = imguiz.VK_ATTACHMENT_STORE_OP_STORE,
+                .stencilLoadOp = imguiz.VK_ATTACHMENT_LOAD_OP_DONT_CARE,
+                .stencilStoreOp = imguiz.VK_ATTACHMENT_STORE_OP_DONT_CARE,
+                .initialLayout = imguiz.VK_IMAGE_LAYOUT_UNDEFINED,
+                .finalLayout = imguiz.VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,
+            },
         };
 
         // Check for WSI support
@@ -440,7 +463,7 @@ pub const UI = struct {
             WIDTH,
             HEIGHT,
             MIN_IMAGE_COUNT,
-            0,
+            imguiz.VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,
         );
     }
 
@@ -487,6 +510,10 @@ pub const UI = struct {
             null,
         );
         // }
+
+        if (self.surface) |surface| {
+            self.vulkan.instance.destroySurfaceKHR(@enumFromInt(@intFromPtr(surface)), null);
+        }
 
         if (self.window) |window| {
             imguiz.SDL_DestroyWindow(window);

@@ -25,10 +25,10 @@
         packages = {
           zls-custom = pkgs.stdenv.mkDerivation {
             pname = "zls";
-            version = "0.15.0";
+            version = "0.15.1";
             src = pkgs.fetchurl {
-              url = "https://builds.zigtools.org/zls-x86_64-linux-0.15.0.tar.xz";
-              sha256 = "sha256-UIv+P9Y30qAvB/P8faiQA1H0BxFrA2hcXa4mtPAaMN4=";
+              url = "https://builds.zigtools.org/zls-x86_64-linux-0.15.1.tar.xz";
+              sha256 = "sha256-O7OPUiyyMhPowHWsaxcCc/5JtCdLjBKwNMxJZAdAAGc=";
             };
             sourceRoot = ".";
             installPhase = ''
@@ -39,14 +39,13 @@
         };
         devShells.default = pkgs.mkShell {
           buildInputs = with pkgs; [
-            zigpkgs."0.15.1"
+            zigpkgs."0.15.2"
             self.packages.${system}.zls-custom
 
-            sdl3
+            libxkbcommon
+            wayland
             vulkan-loader
             vulkan-validation-layers
-
-            libxkbcommon
           ];
 
           VK_LAYER_PATH = "${pkgs.vulkan-validation-layers}/share/vulkan/explicit_layer.d";

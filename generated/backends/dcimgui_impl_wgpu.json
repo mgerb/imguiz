@@ -1,5 +1,20 @@
 {
-    "defines": [],
+    "defines": [
+        {
+            "name": "IMGUI_IMPL_WEBGPU_BACKEND_DAWN",
+            "conditionals": [
+                {
+                    "condition": "if",
+                    "expression": "defined(__EMSCRIPTEN__)&&!defined(IMGUI_IMPL_WEBGPU_BACKEND_DAWN)&&!defined(IMGUI_IMPL_WEBGPU_BACKEND_WGPU)"
+                }
+            ],
+            "is_internal": false,
+            "source_location": {
+                "filename": "imgui_impl_wgpu.h",
+                "line": 40
+            }
+        }
+    ],
     "enums": [],
     "typedefs": [
         {
@@ -60,10 +75,11 @@
                             "name": "WGPUDevice"
                         }
                     },
+                    "default_value": "nullptr",
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_wgpu.h",
-                        "line": 37
+                        "line": 51
                     }
                 },
                 {
@@ -81,7 +97,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_wgpu.h",
-                        "line": 38
+                        "line": 52
                     }
                 },
                 {
@@ -99,7 +115,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_wgpu.h",
-                        "line": 39
+                        "line": 53
                     }
                 },
                 {
@@ -117,7 +133,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_wgpu.h",
-                        "line": 40
+                        "line": 54
                     }
                 },
                 {
@@ -135,14 +151,19 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_wgpu.h",
-                        "line": 41
+                        "line": 55
                     }
                 }
             ],
+            "comments": {
+                "preceding": [
+                    "// Initialization data, for ImGui_ImplWGPU_Init()"
+                ]
+            },
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_wgpu.h",
-                "line": 35
+                "line": 49
             }
         },
         {
@@ -167,7 +188,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_wgpu.h",
-                        "line": 69
+                        "line": 83
                     }
                 },
                 {
@@ -184,7 +205,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_wgpu.h",
-                        "line": 70
+                        "line": 84
                     }
                 }
             ],
@@ -198,7 +219,199 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_wgpu.h",
-                "line": 67
+                "line": 81
+            }
+        },
+        {
+            "name": "ImGui_ImplWGPU_CreateSurfaceInfo",
+            "original_fully_qualified_name": "ImGui_ImplWGPU_CreateSurfaceInfo",
+            "kind": "struct",
+            "by_value": false,
+            "forward_declaration": false,
+            "is_anonymous": false,
+            "fields": [
+                {
+                    "name": "Instance",
+                    "is_array": false,
+                    "is_anonymous": false,
+                    "type": {
+                        "declaration": "WGPUInstance",
+                        "description": {
+                            "kind": "User",
+                            "name": "WGPUInstance"
+                        }
+                    },
+                    "conditionals": [
+                        {
+                            "condition": "ifndef",
+                            "expression": "__EMSCRIPTEN__"
+                        }
+                    ],
+                    "is_internal": false,
+                    "source_location": {
+                        "filename": "imgui_impl_wgpu.h",
+                        "line": 111
+                    }
+                },
+                {
+                    "name": "System",
+                    "is_array": false,
+                    "is_anonymous": false,
+                    "type": {
+                        "declaration": "const char*",
+                        "description": {
+                            "kind": "Pointer",
+                            "inner_type": {
+                                "kind": "Builtin",
+                                "builtin_type": "char",
+                                "storage_classes": [
+                                    "const"
+                                ]
+                            }
+                        }
+                    },
+                    "comments": {
+                        "attached": "// \"cocoa\"   | \"wayland\"   | \"x11\"     | \"win32\""
+                    },
+                    "conditionals": [
+                        {
+                            "condition": "ifndef",
+                            "expression": "__EMSCRIPTEN__"
+                        }
+                    ],
+                    "is_internal": false,
+                    "source_location": {
+                        "filename": "imgui_impl_wgpu.h",
+                        "line": 112
+                    }
+                },
+                {
+                    "name": "RawWindow",
+                    "is_array": false,
+                    "is_anonymous": false,
+                    "type": {
+                        "declaration": "void*",
+                        "description": {
+                            "kind": "Pointer",
+                            "inner_type": {
+                                "kind": "Builtin",
+                                "builtin_type": "void"
+                            }
+                        }
+                    },
+                    "comments": {
+                        "attached": "// NSWindow* | 0           | Window    | HWND"
+                    },
+                    "conditionals": [
+                        {
+                            "condition": "ifndef",
+                            "expression": "__EMSCRIPTEN__"
+                        }
+                    ],
+                    "is_internal": false,
+                    "source_location": {
+                        "filename": "imgui_impl_wgpu.h",
+                        "line": 113
+                    }
+                },
+                {
+                    "name": "RawDisplay",
+                    "is_array": false,
+                    "is_anonymous": false,
+                    "type": {
+                        "declaration": "void*",
+                        "description": {
+                            "kind": "Pointer",
+                            "inner_type": {
+                                "kind": "Builtin",
+                                "builtin_type": "void"
+                            }
+                        }
+                    },
+                    "comments": {
+                        "attached": "// 0         | wl_display* | Display*  | 0"
+                    },
+                    "conditionals": [
+                        {
+                            "condition": "ifndef",
+                            "expression": "__EMSCRIPTEN__"
+                        }
+                    ],
+                    "is_internal": false,
+                    "source_location": {
+                        "filename": "imgui_impl_wgpu.h",
+                        "line": 114
+                    }
+                },
+                {
+                    "name": "RawSurface",
+                    "is_array": false,
+                    "is_anonymous": false,
+                    "type": {
+                        "declaration": "void*",
+                        "description": {
+                            "kind": "Pointer",
+                            "inner_type": {
+                                "kind": "Builtin",
+                                "builtin_type": "void"
+                            }
+                        }
+                    },
+                    "comments": {
+                        "attached": "//           | wl_surface* | 0         | 0"
+                    },
+                    "conditionals": [
+                        {
+                            "condition": "ifndef",
+                            "expression": "__EMSCRIPTEN__"
+                        }
+                    ],
+                    "is_internal": false,
+                    "source_location": {
+                        "filename": "imgui_impl_wgpu.h",
+                        "line": 115
+                    }
+                },
+                {
+                    "name": "RawInstance",
+                    "is_array": false,
+                    "is_anonymous": false,
+                    "type": {
+                        "declaration": "void*",
+                        "description": {
+                            "kind": "Pointer",
+                            "inner_type": {
+                                "kind": "Builtin",
+                                "builtin_type": "void"
+                            }
+                        }
+                    },
+                    "comments": {
+                        "attached": "// 0         | 0           | 0         | HINSTANCE"
+                    },
+                    "conditionals": [
+                        {
+                            "condition": "ifndef",
+                            "expression": "__EMSCRIPTEN__"
+                        }
+                    ],
+                    "is_internal": false,
+                    "source_location": {
+                        "filename": "imgui_impl_wgpu.h",
+                        "line": 116
+                    }
+                }
+            ],
+            "conditionals": [
+                {
+                    "condition": "ifndef",
+                    "expression": "__EMSCRIPTEN__"
+                }
+            ],
+            "is_internal": false,
+            "source_location": {
+                "filename": "imgui_impl_wgpu.h",
+                "line": 109
             }
         }
     ],
@@ -245,7 +458,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_wgpu.h",
-                "line": 52
+                "line": 66
             }
         },
         {
@@ -268,7 +481,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_wgpu.h",
-                "line": 53
+                "line": 67
             }
         },
         {
@@ -291,7 +504,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_wgpu.h",
-                "line": 54
+                "line": 68
             }
         },
         {
@@ -344,7 +557,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_wgpu.h",
-                "line": 55
+                "line": 69
             }
         },
         {
@@ -372,7 +585,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_wgpu.h",
-                "line": 58
+                "line": 72
             }
         },
         {
@@ -395,7 +608,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_wgpu.h",
-                "line": 59
+                "line": 73
             }
         },
         {
@@ -434,13 +647,420 @@
             "is_static": false,
             "comments": {
                 "preceding": [
-                    "// (Advanced) Use e.g. if you need to precisely control the timing of texture updates (e.g. for staged rendering), by setting ImDrawData::Textures = NULL to handle this manually."
+                    "// (Advanced) Use e.g. if you need to precisely control the timing of texture updates (e.g. for staged rendering), by setting ImDrawData::Textures = nullptr to handle this manually."
                 ]
             },
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_wgpu.h",
-                "line": 62
+                "line": 76
+            }
+        },
+        {
+            "name": "cImGui_ImplWGPU_IsSurfaceStatusError",
+            "original_fully_qualified_name": "ImGui_ImplWGPU_IsSurfaceStatusError",
+            "return_type": {
+                "declaration": "bool",
+                "description": {
+                    "kind": "Builtin",
+                    "builtin_type": "bool"
+                }
+            },
+            "arguments": [
+                {
+                    "name": "status",
+                    "type": {
+                        "declaration": "WGPUSurfaceGetCurrentTextureStatus",
+                        "description": {
+                            "kind": "User",
+                            "name": "WGPUSurfaceGetCurrentTextureStatus"
+                        }
+                    },
+                    "is_array": false,
+                    "is_varargs": false,
+                    "is_instance_pointer": false
+                }
+            ],
+            "is_default_argument_helper": false,
+            "is_manual_helper": false,
+            "is_imstr_helper": false,
+            "has_imstr_helper": false,
+            "is_unformatted_helper": false,
+            "is_static": false,
+            "comments": {
+                "preceding": [
+                    "// (Optional) Helper to wrap some of the Dawn/WGPU/Emscripten quirks"
+                ]
+            },
+            "is_internal": false,
+            "source_location": {
+                "filename": "imgui_impl_wgpu.h",
+                "line": 93
+            }
+        },
+        {
+            "name": "cImGui_ImplWGPU_IsSurfaceStatusSubOptimal",
+            "original_fully_qualified_name": "ImGui_ImplWGPU_IsSurfaceStatusSubOptimal",
+            "return_type": {
+                "declaration": "bool",
+                "description": {
+                    "kind": "Builtin",
+                    "builtin_type": "bool"
+                }
+            },
+            "arguments": [
+                {
+                    "name": "status",
+                    "type": {
+                        "declaration": "WGPUSurfaceGetCurrentTextureStatus",
+                        "description": {
+                            "kind": "User",
+                            "name": "WGPUSurfaceGetCurrentTextureStatus"
+                        }
+                    },
+                    "is_array": false,
+                    "is_varargs": false,
+                    "is_instance_pointer": false
+                }
+            ],
+            "is_default_argument_helper": false,
+            "is_manual_helper": false,
+            "is_imstr_helper": false,
+            "has_imstr_helper": false,
+            "is_unformatted_helper": false,
+            "is_static": false,
+            "comments": {
+                "attached": "// Return whether the texture is suboptimal and may need to be recreated."
+            },
+            "is_internal": false,
+            "source_location": {
+                "filename": "imgui_impl_wgpu.h",
+                "line": 94
+            }
+        },
+        {
+            "name": "cImGui_ImplWGPU_DebugPrintAdapterInfo",
+            "original_fully_qualified_name": "ImGui_ImplWGPU_DebugPrintAdapterInfo",
+            "return_type": {
+                "declaration": "void",
+                "description": {
+                    "kind": "Builtin",
+                    "builtin_type": "void"
+                }
+            },
+            "arguments": [
+                {
+                    "name": "adapter",
+                    "type": {
+                        "declaration": "WGPUAdapter",
+                        "description": {
+                            "kind": "User",
+                            "name": "WGPUAdapter"
+                        }
+                    },
+                    "is_array": false,
+                    "is_varargs": false,
+                    "is_instance_pointer": false
+                }
+            ],
+            "is_default_argument_helper": false,
+            "is_manual_helper": false,
+            "is_imstr_helper": false,
+            "has_imstr_helper": false,
+            "is_unformatted_helper": false,
+            "is_static": false,
+            "comments": {
+                "preceding": [
+                    "// (Optional) Helper for debugging/logging"
+                ]
+            },
+            "is_internal": false,
+            "source_location": {
+                "filename": "imgui_impl_wgpu.h",
+                "line": 97
+            }
+        },
+        {
+            "name": "cImGui_ImplWGPU_GetBackendTypeName",
+            "original_fully_qualified_name": "ImGui_ImplWGPU_GetBackendTypeName",
+            "return_type": {
+                "declaration": "const char*",
+                "description": {
+                    "kind": "Pointer",
+                    "inner_type": {
+                        "kind": "Builtin",
+                        "builtin_type": "char",
+                        "storage_classes": [
+                            "const"
+                        ]
+                    }
+                }
+            },
+            "arguments": [
+                {
+                    "name": "type",
+                    "type": {
+                        "declaration": "WGPUBackendType",
+                        "description": {
+                            "kind": "User",
+                            "name": "WGPUBackendType"
+                        }
+                    },
+                    "is_array": false,
+                    "is_varargs": false,
+                    "is_instance_pointer": false
+                }
+            ],
+            "is_default_argument_helper": false,
+            "is_manual_helper": false,
+            "is_imstr_helper": false,
+            "has_imstr_helper": false,
+            "is_unformatted_helper": false,
+            "is_static": false,
+            "is_internal": false,
+            "source_location": {
+                "filename": "imgui_impl_wgpu.h",
+                "line": 98
+            }
+        },
+        {
+            "name": "cImGui_ImplWGPU_GetAdapterTypeName",
+            "original_fully_qualified_name": "ImGui_ImplWGPU_GetAdapterTypeName",
+            "return_type": {
+                "declaration": "const char*",
+                "description": {
+                    "kind": "Pointer",
+                    "inner_type": {
+                        "kind": "Builtin",
+                        "builtin_type": "char",
+                        "storage_classes": [
+                            "const"
+                        ]
+                    }
+                }
+            },
+            "arguments": [
+                {
+                    "name": "type",
+                    "type": {
+                        "declaration": "WGPUAdapterType",
+                        "description": {
+                            "kind": "User",
+                            "name": "WGPUAdapterType"
+                        }
+                    },
+                    "is_array": false,
+                    "is_varargs": false,
+                    "is_instance_pointer": false
+                }
+            ],
+            "is_default_argument_helper": false,
+            "is_manual_helper": false,
+            "is_imstr_helper": false,
+            "has_imstr_helper": false,
+            "is_unformatted_helper": false,
+            "is_static": false,
+            "is_internal": false,
+            "source_location": {
+                "filename": "imgui_impl_wgpu.h",
+                "line": 99
+            }
+        },
+        {
+            "name": "cImGui_ImplWGPU_GetDeviceLostReasonName",
+            "original_fully_qualified_name": "ImGui_ImplWGPU_GetDeviceLostReasonName",
+            "return_type": {
+                "declaration": "const char*",
+                "description": {
+                    "kind": "Pointer",
+                    "inner_type": {
+                        "kind": "Builtin",
+                        "builtin_type": "char",
+                        "storage_classes": [
+                            "const"
+                        ]
+                    }
+                }
+            },
+            "arguments": [
+                {
+                    "name": "type",
+                    "type": {
+                        "declaration": "WGPUDeviceLostReason",
+                        "description": {
+                            "kind": "User",
+                            "name": "WGPUDeviceLostReason"
+                        }
+                    },
+                    "is_array": false,
+                    "is_varargs": false,
+                    "is_instance_pointer": false
+                }
+            ],
+            "is_default_argument_helper": false,
+            "is_manual_helper": false,
+            "is_imstr_helper": false,
+            "has_imstr_helper": false,
+            "is_unformatted_helper": false,
+            "is_static": false,
+            "conditionals": [
+                {
+                    "condition": "if",
+                    "expression": "defined(IMGUI_IMPL_WEBGPU_BACKEND_DAWN)"
+                }
+            ],
+            "is_internal": false,
+            "source_location": {
+                "filename": "imgui_impl_wgpu.h",
+                "line": 101
+            }
+        },
+        {
+            "name": "cImGui_ImplWGPU_GetErrorTypeName",
+            "original_fully_qualified_name": "ImGui_ImplWGPU_GetErrorTypeName",
+            "return_type": {
+                "declaration": "const char*",
+                "description": {
+                    "kind": "Pointer",
+                    "inner_type": {
+                        "kind": "Builtin",
+                        "builtin_type": "char",
+                        "storage_classes": [
+                            "const"
+                        ]
+                    }
+                }
+            },
+            "arguments": [
+                {
+                    "name": "type",
+                    "type": {
+                        "declaration": "WGPUErrorType",
+                        "description": {
+                            "kind": "User",
+                            "name": "WGPUErrorType"
+                        }
+                    },
+                    "is_array": false,
+                    "is_varargs": false,
+                    "is_instance_pointer": false
+                }
+            ],
+            "is_default_argument_helper": false,
+            "is_manual_helper": false,
+            "is_imstr_helper": false,
+            "has_imstr_helper": false,
+            "is_unformatted_helper": false,
+            "is_static": false,
+            "conditionals": [
+                {
+                    "condition": "if",
+                    "expression": "defined(IMGUI_IMPL_WEBGPU_BACKEND_DAWN)"
+                }
+            ],
+            "is_internal": false,
+            "source_location": {
+                "filename": "imgui_impl_wgpu.h",
+                "line": 102
+            }
+        },
+        {
+            "name": "cImGui_ImplWGPU_GetLogLevelName",
+            "original_fully_qualified_name": "ImGui_ImplWGPU_GetLogLevelName",
+            "return_type": {
+                "declaration": "const char*",
+                "description": {
+                    "kind": "Pointer",
+                    "inner_type": {
+                        "kind": "Builtin",
+                        "builtin_type": "char",
+                        "storage_classes": [
+                            "const"
+                        ]
+                    }
+                }
+            },
+            "arguments": [
+                {
+                    "name": "level",
+                    "type": {
+                        "declaration": "WGPULogLevel",
+                        "description": {
+                            "kind": "User",
+                            "name": "WGPULogLevel"
+                        }
+                    },
+                    "is_array": false,
+                    "is_varargs": false,
+                    "is_instance_pointer": false
+                }
+            ],
+            "is_default_argument_helper": false,
+            "is_manual_helper": false,
+            "is_imstr_helper": false,
+            "has_imstr_helper": false,
+            "is_unformatted_helper": false,
+            "is_static": false,
+            "conditionals": [
+                {
+                    "condition": "ifnot",
+                    "expression": "defined(IMGUI_IMPL_WEBGPU_BACKEND_DAWN)"
+                },
+                {
+                    "condition": "if",
+                    "expression": "defined(IMGUI_IMPL_WEBGPU_BACKEND_WGPU)"
+                }
+            ],
+            "is_internal": false,
+            "source_location": {
+                "filename": "imgui_impl_wgpu.h",
+                "line": 104
+            }
+        },
+        {
+            "name": "cImGui_ImplWGPU_CreateWGPUSurfaceHelper",
+            "original_fully_qualified_name": "ImGui_ImplWGPU_CreateWGPUSurfaceHelper",
+            "return_type": {
+                "declaration": "WGPUSurface",
+                "description": {
+                    "kind": "User",
+                    "name": "WGPUSurface"
+                }
+            },
+            "arguments": [
+                {
+                    "name": "info",
+                    "type": {
+                        "declaration": "ImGui_ImplWGPU_CreateSurfaceInfo*",
+                        "description": {
+                            "kind": "Pointer",
+                            "inner_type": {
+                                "kind": "User",
+                                "name": "ImGui_ImplWGPU_CreateSurfaceInfo"
+                            }
+                        }
+                    },
+                    "is_array": false,
+                    "is_varargs": false,
+                    "is_instance_pointer": false
+                }
+            ],
+            "is_default_argument_helper": false,
+            "is_manual_helper": false,
+            "is_imstr_helper": false,
+            "has_imstr_helper": false,
+            "is_unformatted_helper": false,
+            "is_static": false,
+            "conditionals": [
+                {
+                    "condition": "ifndef",
+                    "expression": "__EMSCRIPTEN__"
+                }
+            ],
+            "is_internal": false,
+            "source_location": {
+                "filename": "imgui_impl_wgpu.h",
+                "line": 118
             }
         }
     ]
