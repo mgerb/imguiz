@@ -53,7 +53,9 @@ pub fn build(b: *std.Build) void {
             .optimize = optimize,
             .linkage = .static,
         });
-        module.linkLibrary(sdl.artifact("SDL3"));
+        const sdl_lib = sdl.artifact("SDL3");
+        module.addIncludePath(sdl_lib.getEmittedIncludeTree());
+        module.linkLibrary(sdl_lib);
 
         module.addIncludePath(b.path("generated"));
         module.addIncludePath(b.path("generated/backends"));
