@@ -51,7 +51,7 @@ pub fn build(b: *std.Build) void {
         const sdl = b.dependency("sdl", .{
             .target = target,
             .optimize = optimize,
-            .linkage = .static,
+            .preferred_linkage = .static,
         });
         const sdl_lib = sdl.artifact("SDL3");
         module.addIncludePath(sdl_lib.getEmittedIncludeTree());

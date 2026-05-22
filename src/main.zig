@@ -8,41 +8,43 @@ const DEAR_BINDINGS_VERSION = "05f6a235c2d1963b17d98730b6a9d09f705e001c";
 fn runCommand(opts: struct {
     args: []const []const u8,
     allocator: std.mem.Allocator,
+    io: std.Io,
     cwd: ?[]const u8 = null,
 }) !void {
     const command = try std.mem.join(opts.allocator, " ", opts.args);
     defer opts.allocator.free(command);
     std.debug.print("\n--------------------\n{s}\n--------------------\n\n", .{command});
 
-    var child = std.process.Child.init(opts.args, opts.allocator);
-    if (opts.cwd) |cwd| {
-        child.cwd = cwd;
-    }
-    try child.spawn();
-    const term = try child.wait();
+    var child = try std.process.spawn(opts.io, .{
+        .argv = opts.args,
+        .cwd = if (opts.cwd) |cwd| .{ .path = cwd } else .inherit,
+    });
+    const term = try child.wait(opts.io);
 
     switch (term) {
-        .Exited => |val| {
+        .exited => |val| {
             if (val != 0) {
                 std.debug.print("exit code: {}\n", .{val});
                 return error.bad_exit;
             }
         },
-        .Signal => return error.signal,
-        .Stopped => return error.stopped,
-        .Unknown => return error.unknown,
+        .signal => return error.signal,
+        .stopped => return error.stopped,
+        .unknown => return error.unknown,
     }
 }
 
-pub fn main() !void {
-    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+pub fn main(init: std.process.Init) !void {
+    var gpa = std.heap.DebugAllocator(.{}){};
     defer _ = gpa.deinit();
     const allocator = gpa.allocator();
+    const io = init.io;
+    const cwd = std.Io.Dir.cwd();
 
-    try std.fs.cwd().deleteTree("src/generated");
-    try std.fs.cwd().deleteTree(TMP_DIR);
+    try cwd.deleteTree(io, "src/generated");
+    try cwd.deleteTree(io, TMP_DIR);
 
-    std.fs.cwd().makeDir(TMP_DIR) catch |err| {
+    cwd.createDir(io, TMP_DIR, .default_dir) catch |err| {
         if (err != error.PathAlreadyExists) {
             return err;
         }
@@ -51,12 +53,14 @@ pub fn main() !void {
     try runCommand(.{
         .args = &.{ "git", "clone", "https://github.com/dearimgui/dear_bindings" },
         .allocator = allocator,
+        .io = io,
         .cwd = TMP_DIR,
     });
 
     try runCommand(.{
         .args = &.{ "git", "checkout", DEAR_BINDINGS_VERSION },
         .allocator = allocator,
+        .io = io,
         .cwd = TMP_DIR ++ "/dear_bindings",
     });
 
@@ -70,50 +74,59 @@ pub fn main() !void {
             "https://github.com/ocornut/imgui",
         },
         .allocator = allocator,
+        .io = io,
         .cwd = TMP_DIR,
     });
 
     try runCommand(.{
         .args = &.{ "git", "checkout", IMGUI_VERSION },
         .allocator = allocator,
+        .io = io,
         .cwd = TMP_DIR ++ "/imgui",
     });
 
     try runCommand(.{
         .args = &.{ "chmod", "+x", "BuildAllBindings.sh" },
         .allocator = allocator,
+        .io = io,
         .cwd = TMP_DIR ++ "/dear_bindings",
     });
 
     try runCommand(.{
         .args = &.{ "bash", "BuildAllBindings.sh" },
         .allocator = allocator,
+        .io = io,
         .cwd = TMP_DIR ++ "/dear_bindings",
     });
 
     try runCommand(.{
         .args = &.{ "sh", "-c", "cp " ++ TMP_DIR ++ "/imgui/*.h " ++ TMP_DIR ++ "/dear_bindings/generated" },
         .allocator = allocator,
+        .io = io,
     });
 
     try runCommand(.{
         .args = &.{ "sh", "-c", "cp " ++ TMP_DIR ++ "/imgui/*.cpp " ++ TMP_DIR ++ "/dear_bindings/generated" },
         .allocator = allocator,
+        .io = io,
     });
 
     try runCommand(.{
         .args = &.{ "sh", "-c", "cp -R " ++ TMP_DIR ++ "/imgui/backends " ++ TMP_DIR ++ "/dear_bindings/generated" },
         .allocator = allocator,
+        .io = io,
     });
 
     try runCommand(.{
         .args = &.{ "sh", "-c", "cp -R " ++ TMP_DIR ++ "/imgui/misc " ++ TMP_DIR ++ "/dear_bindings/generated" },
         .allocator = allocator,
+        .io = io,
     });
 
     try runCommand(.{
         .args = &.{ "sh", "-c", "cp -R " ++ TMP_DIR ++ "/dear_bindings/generated ./" },
         .allocator = allocator,
+        .io = io,
     });
 
     std.debug.print("All bindings generated.\n", .{});

@@ -25,10 +25,10 @@
         packages = {
           zls-custom = pkgs.stdenv.mkDerivation {
             pname = "zls";
-            version = "0.15.1";
+            version = "0.16.0";
             src = pkgs.fetchurl {
-              url = "https://builds.zigtools.org/zls-x86_64-linux-0.15.1.tar.xz";
-              sha256 = "sha256-O7OPUiyyMhPowHWsaxcCc/5JtCdLjBKwNMxJZAdAAGc=";
+              url = "https://builds.zigtools.org/zls-x86_64-linux-0.16.0.tar.xz";
+              sha256 = "sha256-3tbVYqC4buh4sd33D/qyeXzjzco7AtYHdUj51W3/lrY=";
             };
             sourceRoot = ".";
             installPhase = ''
@@ -42,7 +42,7 @@
           buildInputs = with pkgs; [
             python312
             python312Packages.ply
-            zigpkgs."0.15.2"
+            zigpkgs."0.16.0"
             self.packages.${system}.zls-custom
             bash
           ];

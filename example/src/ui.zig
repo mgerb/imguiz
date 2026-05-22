@@ -133,7 +133,9 @@ pub const UI = struct {
         const style = imguiz.ImGui_GetStyle();
         if (io.*.ConfigFlags & imguiz.ImGuiConfigFlags_ViewportsEnable > 0) {
             style.*.WindowRounding = 0.0;
-            style.*.Colors[imguiz.ImGuiCol_WindowBg].w = 1.0;
+            const window_bg_index: usize = @intCast(imguiz.ImGuiCol_WindowBg);
+            const window_bg = &(style.*.Colors[0][window_bg_index]);
+            window_bg.w = 1.0;
         }
 
         // Setup Platform/Renderer backends
@@ -325,9 +327,10 @@ pub const UI = struct {
         var fd = &wd.Frames.Data[wd.FrameIndex];
 
         {
-            const err = try self.vulkan.device.waitForFences(1, @ptrCast(&fd.Fence), .true, std.math.maxInt(u64));
+            const fence: vk.Fence = @enumFromInt(@intFromPtr(fd.Fence));
+            const err = try self.vulkan.device.waitForFences(&.{fence}, .true, std.math.maxInt(u64));
             check_vk_result(@intFromEnum(err));
-            try self.vulkan.device.resetFences(1, @ptrCast(&fd.Fence));
+            try self.vulkan.device.resetFences(&.{fence});
         }
 
         {
@@ -366,12 +369,11 @@ pub const UI = struct {
             };
 
             try self.vulkan.device.endCommandBuffer(@enumFromInt(@intFromPtr(fd.CommandBuffer)));
-            self.vulkan.graphics_queue.mutex.lock();
-            defer self.vulkan.graphics_queue.mutex.unlock();
+            try self.vulkan.graphics_queue.lock();
+            defer self.vulkan.graphics_queue.unlock();
             try self.vulkan.device.queueSubmit(
                 self.vulkan.graphics_queue.handle,
-                1,
-                @ptrCast(&info),
+                &.{info},
                 @enumFromInt(@intFromPtr(fd.Fence)),
             );
         }
@@ -390,8 +392,8 @@ pub const UI = struct {
             .p_swapchains = @ptrCast(&wd.Swapchain),
             .p_image_indices = @ptrCast(&wd.FrameIndex),
         };
-        self.vulkan.graphics_queue.mutex.lock();
-        defer self.vulkan.graphics_queue.mutex.unlock();
+        try self.vulkan.graphics_queue.lock();
+        defer self.vulkan.graphics_queue.unlock();
         _ = self.vulkan.device.queuePresentKHR(self.vulkan.graphics_queue.handle, @ptrCast(&info)) catch |err| {
             switch (err) {
                 error.OutOfDateKHR => {

@@ -35,13 +35,23 @@ pub const DeviceCandidate = struct {
 pub const Queue = struct {
     handle: vk.Queue,
     family: u32,
-    mutex: std.Thread.Mutex = .{},
+    io: std.Io,
+    mutex: std.Io.Mutex = .init,
 
-    pub fn init(device: Device, family: u32) Queue {
+    pub fn init(device: Device, family: u32, io: std.Io) Queue {
         return .{
             .handle = device.getDeviceQueue(family, 0),
             .family = family,
+            .io = io,
         };
+    }
+
+    pub fn lock(self: *Queue) !void {
+        try self.mutex.lock(self.io);
+    }
+
+    pub fn unlock(self: *Queue) void {
+        self.mutex.unlock(self.io);
     }
 };
 
@@ -62,6 +72,7 @@ pub const Vulkan = struct {
 
     pub fn init(
         allocator: std.mem.Allocator,
+        io: std.Io,
         extra_instance_extensions: ?[][*:0]const u8,
     ) !*Self {
         const vkbd = BaseDispatch.load(vkGetInstanceProcAddr);
@@ -140,7 +151,7 @@ pub const Vulkan = struct {
         const device = Device.init(device_candidate, vkd);
         errdefer device.destroyDevice(null);
 
-        const graphics_queue = Queue.init(device, candidate.queues.graphics_family);
+        const graphics_queue = Queue.init(device, candidate.queues.graphics_family, io);
 
         const pool_size = vk.DescriptorPoolSize{
             .type = .combined_image_sampler,

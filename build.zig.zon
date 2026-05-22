@@ -28,7 +28,7 @@
 
     // Tracks the earliest Zig version that the package considers to be a
     // supported use case.
-    .minimum_zig_version = "0.15.0-dev.631+9a3540d61",
+    .minimum_zig_version = "0.16.0",
 
     // This field is optional.
     // Each dependency must either provide a `url` and `hash`, or a `path`.
@@ -41,8 +41,8 @@
             .hash = "N-V-__8AAENI9wHIo_URLJ_ZfwllA6o_VuxahRnqI7iQfhEb",
         },
         .sdl = .{
-            .url = "git+https://github.com/allyourcodebase/SDL3#467a4baad2acdda1bcf717065793fbbdf2569f8d",
-            .hash = "sdl-0.0.0-i4QD0WN-qQB1RKdRC9-6iZyTco2jIIr3y2DFrAz-D9CH",
+            .url = "git+https://github.com/castholm/SDL.git?ref=release-3.4.x#21c6b79840d123e94a9f183f4b0fa1731668f48d",
+            .hash = "sdl-0.5.0+3.4.8-SDL--k4DpgH323IfF6cEaGzKUdtUQv1azbBmmcv0RMAu",
         },
     },
 

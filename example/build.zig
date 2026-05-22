@@ -22,7 +22,7 @@ pub fn build(b: *std.Build) void {
     });
     exe.root_module.addImport("imguiz", imguiz.module("imguiz"));
 
-    exe.linkSystemLibrary("vulkan");
+    exe.root_module.linkSystemLibrary("vulkan", .{});
 
     const vulkan = b.dependency("vulkan", .{
         .registry = b.dependency("vulkan_headers", .{}).path("registry/vk.xml"),
