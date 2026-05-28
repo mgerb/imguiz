@@ -44,6 +44,10 @@
             .url = "git+https://github.com/castholm/SDL.git?ref=release-3.4.x#21c6b79840d123e94a9f183f4b0fa1731668f48d",
             .hash = "sdl-0.5.0+3.4.8-SDL--k4DpgH323IfF6cEaGzKUdtUQv1azbBmmcv0RMAu",
         },
+        .freetype = .{
+            .url = "git+https://github.com/freetype/freetype?ref=VER-2-13-3",
+            .hash = "N-V-__8AAPqTqwAiWUL1gpvMWzNiz1EVtkhyqjdrdrlVwDZr",
+        },
     },
 
     // Specifies the set of files and directories that are included in this package.

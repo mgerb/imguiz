@@ -18,10 +18,14 @@ zig fetch --save git+https://github.com/mgerb/imguiz
 
 ```zig
 // build.zig
-...
-const imguiz = b.dependency("imguiz", .{});
+const imguiz = b.dependency("imguiz", .{
+    .target = target,
+    .optimize = optimize,
+    // Optionally enable FreeType font rasterization. It is compiled by Zig and statically linked.
+    // https://github.com/ocornut/imgui/blob/master/misc/freetype/README.md
+    .freetype = true,
+});
 exe.root_module.addImport("imguiz", imguiz.module("imguiz"));
-...
 ```
 
 ```zig

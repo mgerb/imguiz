@@ -19,6 +19,7 @@ pub fn build(b: *std.Build) void {
     const imguiz = b.dependency("imguiz", .{
         .target = target,
         .optimize = optimize,
+        .freetype = true,
     });
     exe.root_module.addImport("imguiz", imguiz.module("imguiz"));
 
