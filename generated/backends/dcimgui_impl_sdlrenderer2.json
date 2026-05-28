@@ -38,7 +38,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_sdlrenderer2.h",
-                "line": 32
+                "line": 33
             }
         },
         {
@@ -80,7 +80,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_sdlrenderer2.h",
-                        "line": 52
+                        "line": 53
                     }
                 }
             ],
@@ -94,7 +94,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_sdlrenderer2.h",
-                "line": 50
+                "line": 51
             }
         }
     ],
@@ -141,7 +141,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_sdlrenderer2.h",
-                "line": 35
+                "line": 36
             }
         },
         {
@@ -164,7 +164,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_sdlrenderer2.h",
-                "line": 36
+                "line": 37
             }
         },
         {
@@ -187,7 +187,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_sdlrenderer2.h",
-                "line": 37
+                "line": 38
             }
         },
         {
@@ -243,7 +243,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_sdlrenderer2.h",
-                "line": 38
+                "line": 39
             }
         },
         {
@@ -271,7 +271,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_sdlrenderer2.h",
-                "line": 41
+                "line": 42
             }
         },
         {
@@ -294,7 +294,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_sdlrenderer2.h",
-                "line": 42
+                "line": 43
             }
         },
         {
@@ -339,7 +339,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_sdlrenderer2.h",
-                "line": 45
+                "line": 46
             }
         }
     ]

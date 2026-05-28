@@ -43,7 +43,7 @@
             }
         },
         {
-            "name": "IMGUI_IMPL_VULKAN_MINIMUM_IMAGE_SAMPLER_POOL_SIZE",
+            "name": "IMGUI_IMPL_VULKAN_MINIMUM_SAMPLED_IMAGE_POOL_SIZE",
             "content": "8",
             "comments": {
                 "attached": "// Minimum per atlas"
@@ -52,6 +52,18 @@
             "source_location": {
                 "filename": "imgui_impl_vulkan.h",
                 "line": 82
+            }
+        },
+        {
+            "name": "IMGUI_IMPL_VULKAN_MINIMUM_SAMPLER_POOL_SIZE",
+            "content": "2",
+            "comments": {
+                "attached": "// Minimum for linear + nearest"
+            },
+            "is_internal": false,
+            "source_location": {
+                "filename": "imgui_impl_vulkan.h",
+                "line": 83
             }
         }
     ],
@@ -104,7 +116,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 2296
+                        "line": 2299
                     }
                 },
                 {
@@ -121,7 +133,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 2297
+                        "line": 2300
                     }
                 },
                 {
@@ -141,7 +153,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 2298
+                        "line": 2301
                     }
                 }
             ],
@@ -151,7 +163,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_vulkan.h",
-                "line": 2294
+                "line": 2297
             }
         },
         {
@@ -182,7 +194,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 88
+                        "line": 89
                     }
                 },
                 {
@@ -205,7 +217,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 91
+                        "line": 92
                     }
                 },
                 {
@@ -226,7 +238,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 92
+                        "line": 93
                     }
                 },
                 {
@@ -246,7 +258,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 93
+                        "line": 94
                     }
                 },
                 {
@@ -272,7 +284,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 95
+                        "line": 96
                     }
                 },
                 {
@@ -295,7 +307,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 99
+                        "line": 100
                     }
                 }
             ],
@@ -307,7 +319,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_vulkan.h",
-                "line": 85
+                "line": 86
             }
         },
         {
@@ -335,7 +347,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 112
+                        "line": 113
                     }
                 },
                 {
@@ -352,7 +364,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 113
+                        "line": 114
                     }
                 },
                 {
@@ -369,7 +381,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 114
+                        "line": 115
                     }
                 },
                 {
@@ -386,7 +398,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 115
+                        "line": 116
                     }
                 },
                 {
@@ -403,7 +415,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 116
+                        "line": 117
                     }
                 },
                 {
@@ -420,7 +432,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 117
+                        "line": 118
                     }
                 },
                 {
@@ -440,7 +452,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 118
+                        "line": 119
                     }
                 },
                 {
@@ -455,12 +467,12 @@
                         }
                     },
                     "comments": {
-                        "attached": "// Optional: set to create internal descriptor pool automatically instead of using DescriptorPool."
+                        "attached": "// Optional: set to create internal ImageView descriptor pool automatically instead of using DescriptorPool."
                     },
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 119
+                        "line": 120
                     }
                 },
                 {
@@ -480,7 +492,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 120
+                        "line": 121
                     }
                 },
                 {
@@ -500,7 +512,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 121
+                        "line": 122
                     }
                 },
                 {
@@ -520,7 +532,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 122
+                        "line": 123
                     }
                 },
                 {
@@ -543,7 +555,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 125
+                        "line": 126
                     }
                 },
                 {
@@ -563,7 +575,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 126
+                        "line": 127
                     }
                 },
                 {
@@ -586,7 +598,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 134
+                        "line": 135
                     }
                 },
                 {
@@ -614,7 +626,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 137
+                        "line": 138
                     }
                 },
                 {
@@ -695,7 +707,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 139
+                        "line": 140
                     }
                 },
                 {
@@ -719,7 +731,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 144
+                        "line": 145
                     }
                 },
                 {
@@ -736,7 +748,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 145
+                        "line": 146
                     }
                 }
             ],
@@ -755,7 +767,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_vulkan.h",
-                "line": 110
+                "line": 111
             }
         },
         {
@@ -794,7 +806,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 178
+                        "line": 181
                     }
                 },
                 {
@@ -811,7 +823,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 179
+                        "line": 182
                     }
                 },
                 {
@@ -828,7 +840,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 180
+                        "line": 183
                     }
                 }
             ],
@@ -842,7 +854,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_vulkan.h",
-                "line": 176
+                "line": 179
             }
         },
         {
@@ -867,7 +879,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 222
+                        "line": 225
                     }
                 },
                 {
@@ -884,7 +896,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 223
+                        "line": 226
                     }
                 },
                 {
@@ -901,7 +913,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 224
+                        "line": 227
                     }
                 },
                 {
@@ -918,7 +930,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 225
+                        "line": 228
                     }
                 },
                 {
@@ -935,7 +947,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 226
+                        "line": 229
                     }
                 },
                 {
@@ -952,7 +964,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 227
+                        "line": 230
                     }
                 }
             ],
@@ -966,7 +978,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_vulkan.h",
-                "line": 220
+                "line": 223
             }
         },
         {
@@ -991,7 +1003,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 2296
+                        "line": 2299
                     }
                 },
                 {
@@ -1008,7 +1020,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 2297
+                        "line": 2300
                     }
                 },
                 {
@@ -1028,7 +1040,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 2298
+                        "line": 2301
                     }
                 }
             ],
@@ -1038,7 +1050,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_vulkan.h",
-                "line": 2294
+                "line": 2297
             }
         },
         {
@@ -1063,7 +1075,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 232
+                        "line": 235
                     }
                 },
                 {
@@ -1080,14 +1092,14 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 233
+                        "line": 236
                     }
                 }
             ],
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_vulkan.h",
-                "line": 230
+                "line": 233
             }
         },
         {
@@ -1112,7 +1124,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 2296
+                        "line": 2299
                     }
                 },
                 {
@@ -1129,7 +1141,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 2297
+                        "line": 2300
                     }
                 },
                 {
@@ -1149,7 +1161,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 2298
+                        "line": 2301
                     }
                 }
             ],
@@ -1159,7 +1171,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_vulkan.h",
-                "line": 2294
+                "line": 2297
             }
         },
         {
@@ -1189,7 +1201,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 241
+                        "line": 244
                     }
                 },
                 {
@@ -1209,7 +1221,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 242
+                        "line": 245
                     }
                 },
                 {
@@ -1226,7 +1238,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 243
+                        "line": 246
                     }
                 },
                 {
@@ -1243,7 +1255,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 244
+                        "line": 247
                     }
                 },
                 {
@@ -1263,7 +1275,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 245
+                        "line": 248
                     }
                 },
                 {
@@ -1283,7 +1295,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 246
+                        "line": 249
                     }
                 },
                 {
@@ -1306,7 +1318,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 249
+                        "line": 252
                     }
                 },
                 {
@@ -1323,7 +1335,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 250
+                        "line": 253
                     }
                 },
                 {
@@ -1340,7 +1352,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 251
+                        "line": 254
                     }
                 },
                 {
@@ -1357,7 +1369,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 252
+                        "line": 255
                     }
                 },
                 {
@@ -1377,7 +1389,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 253
+                        "line": 256
                     }
                 },
                 {
@@ -1397,7 +1409,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 254
+                        "line": 257
                     }
                 },
                 {
@@ -1417,7 +1429,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 255
+                        "line": 258
                     }
                 },
                 {
@@ -1437,7 +1449,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 256
+                        "line": 259
                     }
                 },
                 {
@@ -1454,7 +1466,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 257
+                        "line": 260
                     }
                 },
                 {
@@ -1471,7 +1483,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_vulkan.h",
-                        "line": 258
+                        "line": 261
                     }
                 }
             ],
@@ -1484,7 +1496,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_vulkan.h",
-                "line": 238
+                "line": 241
             }
         }
     ],
@@ -1531,7 +1543,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_vulkan.h",
-                "line": 149
+                "line": 150
             }
         },
         {
@@ -1554,7 +1566,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_vulkan.h",
-                "line": 150
+                "line": 151
             }
         },
         {
@@ -1577,7 +1589,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_vulkan.h",
-                "line": 151
+                "line": 152
             }
         },
         {
@@ -1633,7 +1645,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_vulkan.h",
-                "line": 152
+                "line": 153
             }
         },
         {
@@ -1700,7 +1712,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_vulkan.h",
-                "line": 152
+                "line": 153
             }
         },
         {
@@ -1740,7 +1752,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_vulkan.h",
-                "line": 153
+                "line": 154
             }
         },
         {
@@ -1790,7 +1802,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_vulkan.h",
-                "line": 158
+                "line": 159
             }
         },
         {
@@ -1835,11 +1847,103 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_vulkan.h",
-                "line": 161
+                "line": 162
             }
         },
         {
             "name": "cImGui_ImplVulkan_AddTexture",
+            "original_fully_qualified_name": "ImGui_ImplVulkan_AddTexture",
+            "return_type": {
+                "declaration": "VkDescriptorSet",
+                "description": {
+                    "kind": "User",
+                    "name": "VkDescriptorSet"
+                }
+            },
+            "arguments": [
+                {
+                    "name": "image_view",
+                    "type": {
+                        "declaration": "VkImageView",
+                        "description": {
+                            "kind": "User",
+                            "name": "VkImageView"
+                        }
+                    },
+                    "is_array": false,
+                    "is_varargs": false,
+                    "is_instance_pointer": false
+                },
+                {
+                    "name": "image_layout",
+                    "type": {
+                        "declaration": "VkImageLayout",
+                        "description": {
+                            "kind": "User",
+                            "name": "VkImageLayout"
+                        }
+                    },
+                    "is_array": false,
+                    "is_varargs": false,
+                    "is_instance_pointer": false
+                }
+            ],
+            "is_default_argument_helper": false,
+            "is_manual_helper": false,
+            "is_imstr_helper": false,
+            "has_imstr_helper": false,
+            "is_unformatted_helper": false,
+            "is_static": false,
+            "comments": {
+                "preceding": [
+                    "// Register a texture (VkDescriptorSet for a VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE == ImTextureID)"
+                ]
+            },
+            "is_internal": false,
+            "source_location": {
+                "filename": "imgui_impl_vulkan.h",
+                "line": 165
+            }
+        },
+        {
+            "name": "cImGui_ImplVulkan_RemoveTexture",
+            "original_fully_qualified_name": "ImGui_ImplVulkan_RemoveTexture",
+            "return_type": {
+                "declaration": "void",
+                "description": {
+                    "kind": "Builtin",
+                    "builtin_type": "void"
+                }
+            },
+            "arguments": [
+                {
+                    "name": "descriptor_set",
+                    "type": {
+                        "declaration": "VkDescriptorSet",
+                        "description": {
+                            "kind": "User",
+                            "name": "VkDescriptorSet"
+                        }
+                    },
+                    "is_array": false,
+                    "is_varargs": false,
+                    "is_instance_pointer": false
+                }
+            ],
+            "is_default_argument_helper": false,
+            "is_manual_helper": false,
+            "is_imstr_helper": false,
+            "has_imstr_helper": false,
+            "is_unformatted_helper": false,
+            "is_static": false,
+            "is_internal": false,
+            "source_location": {
+                "filename": "imgui_impl_vulkan.h",
+                "line": 166
+            }
+        },
+        {
+            "name": "cImGui_ImplVulkan_AddTextureVkSampler",
             "original_fully_qualified_name": "ImGui_ImplVulkan_AddTexture",
             "return_type": {
                 "declaration": "VkDescriptorSet",
@@ -1896,53 +2000,18 @@
             "is_unformatted_helper": false,
             "is_static": false,
             "comments": {
-                "preceding": [
-                    "// Register a texture (VkDescriptorSet == ImTextureID)",
-                    "// FIXME: This is experimental in the sense that we are unsure how to best design/tackle this problem",
-                    "// Please post to https://github.com/ocornut/imgui/pull/914 if you have suggestions."
-                ]
+                "attached": "// Ignore VkSampler"
             },
-            "is_internal": false,
-            "source_location": {
-                "filename": "imgui_impl_vulkan.h",
-                "line": 166
-            }
-        },
-        {
-            "name": "cImGui_ImplVulkan_RemoveTexture",
-            "original_fully_qualified_name": "ImGui_ImplVulkan_RemoveTexture",
-            "return_type": {
-                "declaration": "void",
-                "description": {
-                    "kind": "Builtin",
-                    "builtin_type": "void"
-                }
-            },
-            "arguments": [
+            "conditionals": [
                 {
-                    "name": "descriptor_set",
-                    "type": {
-                        "declaration": "VkDescriptorSet",
-                        "description": {
-                            "kind": "User",
-                            "name": "VkDescriptorSet"
-                        }
-                    },
-                    "is_array": false,
-                    "is_varargs": false,
-                    "is_instance_pointer": false
+                    "condition": "ifndef",
+                    "expression": "IMGUI_DISABLE_OBSOLETE_FUNCTIONS"
                 }
             ],
-            "is_default_argument_helper": false,
-            "is_manual_helper": false,
-            "is_imstr_helper": false,
-            "has_imstr_helper": false,
-            "is_unformatted_helper": false,
-            "is_static": false,
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_vulkan.h",
-                "line": 167
+                "line": 169
             }
         },
         {
@@ -2083,7 +2152,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_vulkan.h",
-                "line": 171
+                "line": 174
             }
         },
         {
@@ -2234,7 +2303,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_vulkan.h",
-                "line": 171
+                "line": 174
             }
         },
         {
@@ -2402,7 +2471,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_vulkan.h",
-                "line": 208
+                "line": 211
             }
         },
         {
@@ -2487,7 +2556,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_vulkan.h",
-                "line": 209
+                "line": 212
             }
         },
         {
@@ -2582,7 +2651,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_vulkan.h",
-                "line": 210
+                "line": 213
             }
         },
         {
@@ -2664,7 +2733,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_vulkan.h",
-                "line": 211
+                "line": 214
             }
         },
         {
@@ -2701,7 +2770,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_vulkan.h",
-                "line": 212
+                "line": 215
             }
         },
         {
@@ -2738,7 +2807,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_vulkan.h",
-                "line": 213
+                "line": 216
             }
         },
         {
@@ -2775,7 +2844,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_vulkan.h",
-                "line": 214
+                "line": 217
             }
         },
         {
@@ -2821,7 +2890,7 @@
             "is_internal": false,
             "source_location": {
                 "filename": "imgui_impl_vulkan.h",
-                "line": 215
+                "line": 218
             }
         }
     ]

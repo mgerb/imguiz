@@ -112,46 +112,6 @@
                     }
                 },
                 {
-                    "name": "SamplerLinear",
-                    "is_array": false,
-                    "is_anonymous": false,
-                    "type": {
-                        "declaration": "ID3D10SamplerState*",
-                        "description": {
-                            "kind": "Pointer",
-                            "inner_type": {
-                                "kind": "User",
-                                "name": "ID3D10SamplerState"
-                            }
-                        }
-                    },
-                    "is_internal": false,
-                    "source_location": {
-                        "filename": "imgui_impl_dx10.h",
-                        "line": 45
-                    }
-                },
-                {
-                    "name": "SamplerNearest",
-                    "is_array": false,
-                    "is_anonymous": false,
-                    "type": {
-                        "declaration": "ID3D10SamplerState*",
-                        "description": {
-                            "kind": "Pointer",
-                            "inner_type": {
-                                "kind": "User",
-                                "name": "ID3D10SamplerState"
-                            }
-                        }
-                    },
-                    "is_internal": false,
-                    "source_location": {
-                        "filename": "imgui_impl_dx10.h",
-                        "line": 46
-                    }
-                },
-                {
                     "name": "VertexConstantBuffer",
                     "is_array": false,
                     "is_anonymous": false,
@@ -168,7 +128,7 @@
                     "is_internal": false,
                     "source_location": {
                         "filename": "imgui_impl_dx10.h",
-                        "line": 47
+                        "line": 45
                     }
                 }
             ],

@@ -2,8 +2,8 @@ const std = @import("std");
 
 const TMP_DIR = "tmp";
 
-const IMGUI_VERSION = "v1.92.7-docking";
-const DEAR_BINDINGS_VERSION = "05f6a235c2d1963b17d98730b6a9d09f705e001c";
+const IMGUI_VERSION = "v1.92.8-docking";
+const DEAR_BINDINGS_VERSION = "c9ff64913915df41c0f4beef485b98a1c685eda5";
 
 fn runCommand(opts: struct {
     args: []const []const u8,

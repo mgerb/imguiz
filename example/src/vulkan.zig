@@ -1,5 +1,6 @@
 const std = @import("std");
 
+const imguiz = @import("imguiz").imguiz;
 const vk = @import("vulkan");
 const BaseDispatch = vk.BaseWrapper;
 const InstanceDispatch = vk.InstanceWrapper;
@@ -153,16 +154,27 @@ pub const Vulkan = struct {
 
         const graphics_queue = Queue.init(device, candidate.queues.graphics_family, io);
 
-        const pool_size = vk.DescriptorPoolSize{
-            .type = .combined_image_sampler,
-            .descriptor_count = 1,
+        const pool_sizes = [_]vk.DescriptorPoolSize{
+            .{
+                .type = .sampled_image,
+                .descriptor_count = imguiz.IMGUI_IMPL_VULKAN_MINIMUM_SAMPLED_IMAGE_POOL_SIZE,
+            },
+            .{
+                .type = .sampler,
+                .descriptor_count = imguiz.IMGUI_IMPL_VULKAN_MINIMUM_SAMPLER_POOL_SIZE,
+            },
         };
+
+        var max_descriptor_sets: u32 = 0;
+        for (pool_sizes) |pool_size| {
+            max_descriptor_sets += pool_size.descriptor_count;
+        }
 
         const pool_info = vk.DescriptorPoolCreateInfo{
             .flags = .{ .free_descriptor_set_bit = true },
-            .max_sets = 1,
-            .p_pool_sizes = @ptrCast(&pool_size),
-            .pool_size_count = 1,
+            .max_sets = max_descriptor_sets,
+            .p_pool_sizes = &pool_sizes,
+            .pool_size_count = pool_sizes.len,
         };
 
         // Used for SDL window.
