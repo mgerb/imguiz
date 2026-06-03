@@ -113,6 +113,7 @@ pub fn build(b: *std.Build) void {
             .optimize = optimize,
             .link_libcpp = true,
         });
+        module.addCMacro("IMGUI_USE_WCHAR32", "1");
 
         const vulkan = b.dependency("vulkan_headers", .{});
         module.addIncludePath(vulkan.path("include"));
