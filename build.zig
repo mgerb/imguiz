@@ -89,9 +89,7 @@ fn generateBindings(
 
     run_cmd.step.dependOn(b.getInstallStep());
 
-    if (b.args) |args| {
-        run_cmd.addArgs(args);
-    }
+    run_cmd.addPassthruArgs();
 
     const run_step = b.step("run", "Run the app");
     run_step.dependOn(&run_cmd.step);
@@ -130,6 +128,18 @@ pub fn build(b: *std.Build) void {
 
         module.addIncludePath(b.path("generated"));
         module.addIncludePath(b.path("generated/backends"));
+
+        const translate_c = b.addTranslateC(.{
+            .root_source_file = b.path("src/imguiz.h"),
+            .target = target,
+            .optimize = optimize,
+        });
+        translate_c.addIncludePath(vulkan.path("include"));
+        translate_c.addIncludePath(sdl_lib.getEmittedIncludeTree());
+        translate_c.addIncludePath(b.path("generated"));
+        translate_c.addIncludePath(b.path("generated/backends"));
+        module.addImport("imguiz_c", translate_c.createModule());
+
         module.addCSourceFile(.{ .file = b.path("generated/imgui.cpp") });
         module.addCSourceFile(.{ .file = b.path("generated/imgui_widgets.cpp") });
         module.addCSourceFile(.{ .file = b.path("generated/imgui_tables.cpp") });

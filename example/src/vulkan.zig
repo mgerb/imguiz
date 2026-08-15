@@ -122,14 +122,14 @@ pub const Vulkan = struct {
 
         debug_messenger = try instance.createDebugUtilsMessengerEXT(&.{
             .message_severity = .{
-                .error_bit_ext = true,
-                .warning_bit_ext = true,
+                .error_ext = true,
+                .warning_ext = true,
             },
             .message_type = .{
-                .general_bit_ext = true,
-                .validation_bit_ext = true,
-                .performance_bit_ext = true,
-                .device_address_binding_bit_ext = false,
+                .general_ext = true,
+                .validation_ext = true,
+                .performance_ext = true,
+                .device_address_binding_ext = false,
             },
             .pfn_user_callback = debugCallback,
         }, null);
@@ -171,7 +171,7 @@ pub const Vulkan = struct {
         }
 
         const pool_info = vk.DescriptorPoolCreateInfo{
-            .flags = .{ .free_descriptor_set_bit = true },
+            .flags = .{ .free_descriptor_set = true },
             .max_sets = max_descriptor_sets,
             .p_pool_sizes = &pool_sizes,
             .pool_size_count = pool_sizes.len,
@@ -183,7 +183,7 @@ pub const Vulkan = struct {
 
         const command_pool = try device.createCommandPool(&.{
             .queue_family_index = graphics_queue.family,
-            .flags = .{ .reset_command_buffer_bit = true },
+            .flags = .{ .reset_command_buffer = true },
         }, null);
         errdefer device.destroyCommandPool(command_pool, null);
 
@@ -305,7 +305,7 @@ pub const Vulkan = struct {
         for (families, 0..) |properties, i| {
             const family: u32 = @intCast(i);
 
-            if (graphics_family == null and properties.queue_flags.graphics_bit) {
+            if (graphics_family == null and properties.queue_flags.graphics) {
                 graphics_family = family;
             }
         }
