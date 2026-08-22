@@ -28,7 +28,7 @@
 
     // Tracks the earliest Zig version that the package considers to be a
     // supported use case.
-    .minimum_zig_version = "0.16.0",
+    .minimum_zig_version = "0.17.0-dev.1824+7988f7952",
 
     // This field is optional.
     // Each dependency must either provide a `url` and `hash`, or a `path`.
@@ -41,8 +41,8 @@
             .hash = "N-V-__8AAENI9wHIo_URLJ_ZfwllA6o_VuxahRnqI7iQfhEb",
         },
         .sdl = .{
-            .url = "git+https://github.com/castholm/SDL.git?ref=release-3.4.x#21c6b79840d123e94a9f183f4b0fa1731668f48d",
-            .hash = "sdl-0.5.0+3.4.8-SDL--k4DpgH323IfF6cEaGzKUdtUQv1azbBmmcv0RMAu",
+            .url = "git+https://github.com/castholm/SDL.git#fb2d799c4778832a34ccb3739e40dded700684bd",
+            .hash = "sdl-0.5.3+3.4.14-SDL--v4eqAGuIKFsspMVxBxZf1OIEmmH-yHDdEl9ZRdX",
         },
         .freetype = .{
             .url = "git+https://github.com/freetype/freetype#7e0e56f84fd53cf38378d33c8fc8f92d12ab9ac6",
@@ -63,6 +63,6 @@
         "build.zig.zon",
         "src",
         "generated",
-        "readme.md",
+        "README.md",
     },
 }

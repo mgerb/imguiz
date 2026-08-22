@@ -92,7 +92,7 @@ pub const UI = struct {
             return error.SDL_Vulkan_CreateSurfaceFailure;
         }
         self.surface = surface;
-        errdefer self.vulkan.instance.destroySurfaceKHR(@enumFromInt(@intFromPtr(surface)), null);
+        errdefer self.vulkan.instance.destroySurfaceKHR(@fromBackingInt(@intCast(@intFromPtr(surface))), null);
 
         if (!imguiz.cImGui_ImplVulkan_LoadFunctions(@bitCast(API_VERSION), loader)) {
             return error.ImGuiVulkanLoadFailure;
@@ -134,7 +134,7 @@ pub const UI = struct {
         if (io.*.ConfigFlags & imguiz.ImGuiConfigFlags_ViewportsEnable > 0) {
             style.*.WindowRounding = 0.0;
             const window_bg_index: usize = @intCast(imguiz.ImGuiCol_WindowBg);
-            const window_bg = &(style.*.Colors[0][window_bg_index]);
+            const window_bg = &style.*.Colors[window_bg_index];
             window_bg.w = 1.0;
         }
 
@@ -213,7 +213,7 @@ pub const UI = struct {
             // Resize swap chain?
             var fb_width: i32 = undefined;
             var fb_height: i32 = undefined;
-            if (!imguiz.SDL_GetWindowSize(self.window.?, &fb_width, &fb_height)) return error.SDL_GetWindowSizeFailure;
+            if (!imguiz.SDL_GetWindowSizeInPixels(self.window.?, &fb_width, &fb_height)) return error.SDL_GetWindowSizeInPixelsFailure;
             if (fb_width > 0 and fb_height > 0 and (self.swapchain_rebuild or self.vulkan_window.Width != fb_width or self.vulkan_window.Height != fb_height)) {
                 imguiz.cImGui_ImplVulkan_SetMinImageCount(MIN_IMAGE_COUNT);
                 imguiz.cImGui_ImplVulkanH_CreateOrResizeWindow(
@@ -304,9 +304,9 @@ pub const UI = struct {
         var image_acquired_semaphore = wd.FrameSemaphores.Data[wd.SemaphoreIndex].ImageAcquiredSemaphore;
         var render_complete_semaphore = wd.FrameSemaphores.Data[wd.SemaphoreIndex].RenderCompleteSemaphore;
         const result = (self.vulkan.device.acquireNextImageKHR(
-            @enumFromInt(@intFromPtr(wd.Swapchain)),
+            @fromBackingInt(@intCast(@intFromPtr(wd.Swapchain))),
             std.math.maxInt(u64),
-            @enumFromInt(@intFromPtr(image_acquired_semaphore)),
+            @fromBackingInt(@intCast(@intFromPtr(image_acquired_semaphore))),
             .null_handle,
         ) catch |err| {
             switch (err) {
@@ -327,37 +327,37 @@ pub const UI = struct {
         var fd = &wd.Frames.Data[wd.FrameIndex];
 
         {
-            const fence: vk.Fence = @enumFromInt(@intFromPtr(fd.Fence));
+            const fence: vk.Fence = @fromBackingInt(@intCast(@intFromPtr(fd.Fence)));
             const err = try self.vulkan.device.waitForFences(&.{fence}, .true, std.math.maxInt(u64));
-            check_vk_result(@intFromEnum(err));
+            check_vk_result(@backingInt(err));
             try self.vulkan.device.resetFences(&.{fence});
         }
 
         {
-            try self.vulkan.device.resetCommandPool(@enumFromInt(@intFromPtr(fd.CommandPool)), .{});
+            try self.vulkan.device.resetCommandPool(@fromBackingInt(@intCast(@intFromPtr(fd.CommandPool))), .{});
             const info = vk.CommandBufferBeginInfo{
-                .flags = .{ .one_time_submit_bit = true },
+                .flags = .{ .one_time_submit = true },
             };
-            try self.vulkan.device.beginCommandBuffer(@enumFromInt(@intFromPtr(fd.CommandBuffer)), @ptrCast(&info));
+            try self.vulkan.device.beginCommandBuffer(@fromBackingInt(@intCast(@intFromPtr(fd.CommandBuffer))), @ptrCast(&info));
         }
         {
             const info = vk.RenderPassBeginInfo{
-                .render_pass = @enumFromInt(@intFromPtr(wd.RenderPass)),
-                .framebuffer = @enumFromInt(@intFromPtr(fd.Framebuffer)),
+                .render_pass = @fromBackingInt(@intCast(@intFromPtr(wd.RenderPass))),
+                .framebuffer = @fromBackingInt(@intCast(@intFromPtr(fd.Framebuffer))),
                 .render_area = .{ .extent = .{ .width = @intCast(wd.Width), .height = @intCast(wd.Height) }, .offset = .{ .x = 0, .y = 0 } },
                 .clear_value_count = 1,
                 .p_clear_values = @ptrCast(&wd.ClearValue),
             };
-            self.vulkan.device.cmdBeginRenderPass(@enumFromInt(@intFromPtr(fd.CommandBuffer)), @ptrCast(&info), .@"inline");
+            self.vulkan.device.cmdBeginRenderPass(@fromBackingInt(@intCast(@intFromPtr(fd.CommandBuffer))), @ptrCast(&info), .@"inline");
         }
 
         // Record dear imgui primitives into command buffer
         imguiz.cImGui_ImplVulkan_RenderDrawData(draw_data, fd.CommandBuffer);
 
         // Submit command buffer
-        self.vulkan.device.cmdEndRenderPass(@enumFromInt(@intFromPtr(fd.CommandBuffer)));
+        self.vulkan.device.cmdEndRenderPass(@fromBackingInt(@intCast(@intFromPtr(fd.CommandBuffer))));
         {
-            var wait_stage = vk.PipelineStageFlags{ .color_attachment_output_bit = true };
+            var wait_stage = vk.PipelineStageFlags{ .color_attachment_output = true };
             const info = vk.SubmitInfo{
                 .wait_semaphore_count = 1,
                 .p_wait_semaphores = @ptrCast(&image_acquired_semaphore),
@@ -368,13 +368,13 @@ pub const UI = struct {
                 .p_signal_semaphores = @ptrCast(&render_complete_semaphore),
             };
 
-            try self.vulkan.device.endCommandBuffer(@enumFromInt(@intFromPtr(fd.CommandBuffer)));
+            try self.vulkan.device.endCommandBuffer(@fromBackingInt(@intCast(@intFromPtr(fd.CommandBuffer))));
             try self.vulkan.graphics_queue.lock();
             defer self.vulkan.graphics_queue.unlock();
             try self.vulkan.device.queueSubmit(
                 self.vulkan.graphics_queue.handle,
                 &.{info},
-                @enumFromInt(@intFromPtr(fd.Fence)),
+                @fromBackingInt(@intCast(@intFromPtr(fd.Fence))),
             );
         }
     }
@@ -426,7 +426,7 @@ pub const UI = struct {
         _ = self.vulkan.instance.getPhysicalDeviceSurfaceSupportKHR(
             self.vulkan.physical_device,
             self.vulkan.graphics_queue.family,
-            @enumFromInt(@intFromPtr(self.vulkan_window.Surface)),
+            @fromBackingInt(@intCast(@intFromPtr(self.vulkan_window.Surface))),
         ) catch return error.NoWSISupport;
 
         // Select Surface Format
@@ -454,6 +454,10 @@ pub const UI = struct {
             present_modes.len,
         );
 
+        var fb_width: i32 = undefined;
+        var fb_height: i32 = undefined;
+        if (!imguiz.SDL_GetWindowSizeInPixels(self.window.?, &fb_width, &fb_height)) return error.SDL_GetWindowSizeInPixelsFailure;
+
         // Create SwapChain, RenderPass, Framebuffer, etc.
         imguiz.cImGui_ImplVulkanH_CreateOrResizeWindow(
             self.vkInstance(),
@@ -462,8 +466,8 @@ pub const UI = struct {
             &self.vulkan_window,
             self.vulkan.graphics_queue.family,
             null,
-            WIDTH,
-            HEIGHT,
+            fb_width,
+            fb_height,
             MIN_IMAGE_COUNT,
             imguiz.VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,
         );
@@ -481,23 +485,23 @@ pub const UI = struct {
     }
 
     fn vkInstance(self: *const Self) imguiz.VkInstance {
-        return @ptrFromInt(@intFromEnum(self.vulkan.instance.handle));
+        return @ptrFromInt(@backingInt(self.vulkan.instance.handle));
     }
 
     fn vkDevice(self: *const Self) imguiz.VkDevice {
-        return @ptrFromInt(@intFromEnum(self.vulkan.device.handle));
+        return @ptrFromInt(@backingInt(self.vulkan.device.handle));
     }
 
     fn vkPhysicalDevice(self: *const Self) imguiz.VkPhysicalDevice {
-        return @ptrFromInt(@intFromEnum(self.vulkan.physical_device));
+        return @ptrFromInt(@backingInt(self.vulkan.physical_device));
     }
 
     fn vkDescriptorPool(self: *const Self) imguiz.VkDescriptorPool {
-        return @ptrFromInt(@intFromEnum(self.vulkan.descriptor_pool));
+        return @ptrFromInt(@backingInt(self.vulkan.descriptor_pool));
     }
 
     fn vkQueue(self: *const Self) imguiz.VkQueue {
-        return @ptrFromInt(@intFromEnum(self.vulkan.graphics_queue.handle));
+        return @ptrFromInt(@backingInt(self.vulkan.graphics_queue.handle));
     }
 
     pub fn deinit(self: *const Self) void {
@@ -514,7 +518,7 @@ pub const UI = struct {
         // }
 
         if (self.surface) |surface| {
-            self.vulkan.instance.destroySurfaceKHR(@enumFromInt(@intFromPtr(surface)), null);
+            self.vulkan.instance.destroySurfaceKHR(@fromBackingInt(@intCast(@intFromPtr(surface))), null);
         }
 
         if (self.window) |window| {
