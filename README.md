@@ -3,7 +3,7 @@
 - Provides imgui and SDL3 (statically linked) to your Zig application.
 - [dear_bindings](https://github.com/dearimgui/dear_bindings) to use [imgui](https://github.com/ocornut/imgui) (docking branch) in [zig](https://ziglang.org/)
 - Currently only SDL3 and Vulkan are supported, but it should be easy to update by modifying the following to add imgui backends.
-  - `@cInclude` in `./src/imguiz.zig`
+  - `#include` directives in `./src/imguiz.h`
   - `module.addCSourceFile` invocations in `./build.zig`
 
 ![screenshot](./screenshots/1.png)
