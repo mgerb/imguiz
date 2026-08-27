@@ -39,6 +39,10 @@
         .imguiz = .{
             .path = "..",
         },
+        .pipewire = .{
+            .url = "git+https://github.com/mgerb/pipewire#266d8e3ddcb2f09c475f239bc617cd048d2a8680",
+            .hash = "pipewire-1.6.3-tKslQ7GMAQDta-snC1w81e-MLStcOtbSmgf-ZVldYrvt",
+        },
         .vulkan_headers = .{
             .url = "git+https://github.com/KhronosGroup/Vulkan-Headers#a01329f307fa6067da824de9f587f292d761680b",
             .hash = "N-V-__8AAENI9wHIo_URLJ_ZfwllA6o_VuxahRnqI7iQfhEb",
