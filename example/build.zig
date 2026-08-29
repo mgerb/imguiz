@@ -20,8 +20,17 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
         .freetype = true,
+        .pipewire_linkage = .static,
     });
     exe.root_module.addImport("imguiz", imguiz.module("imguiz"));
+
+    if (target.result.os.tag == .linux) {
+        const pipewire = b.dependency("pipewire", .{
+            .target = target,
+            .optimize = optimize,
+        });
+        exe.root_module.addImport("pipewire", pipewire.module("pipewire"));
+    }
 
     exe.root_module.linkSystemLibrary("vulkan", .{});
 

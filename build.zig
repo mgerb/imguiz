@@ -1,5 +1,34 @@
 const std = @import("std");
 
+const Pipewire = enum {
+    static,
+    dynamic,
+};
+
+// If static, then we have to override some values in SDL_build_config.h.
+fn configure_pipewire(target: std.Build.ResolvedTarget, sdl_lib: *std.Build.Step.Compile, pipewire: ?Pipewire) void {
+    if (target.result.os.tag == .linux and pipewire != null and pipewire.? == .static) {
+        for (sdl_lib.root_module.include_dirs.items) |include_dir| {
+            switch (include_dir) {
+                .config_header_step => |config_header| {
+                    if (std.mem.eql(u8, config_header.include_path, "SDL_build_config.h")) {
+                        inline for (.{
+                            "SDL_AUDIO_DRIVER_PIPEWIRE_DYNAMIC",
+                            "SDL_CAMERA_DRIVER_PIPEWIRE_DYNAMIC",
+                        }) |config_name| {
+                            config_header.addValue(config_name, i64, 0);
+                        }
+                        return;
+                    }
+                },
+                else => {},
+            }
+        }
+
+        @panic("SDL build config header not found");
+    }
+}
+
 fn buildFreetype(
     b: *std.Build,
     target: std.Build.ResolvedTarget,
@@ -101,6 +130,7 @@ pub fn build(b: *std.Build) void {
 
     const generate_bindings = b.option(bool, "generate", "Generate the bindings");
     const freetype = b.option(bool, "freetype", "Enable FreeType font rasterization") orelse false;
+    const pipewire = b.option(Pipewire, "pipewire_linkage", "Configure SDL's PipeWire backend");
 
     if (generate_bindings != null and generate_bindings.?) {
         generateBindings(b, target, optimize);
@@ -125,6 +155,7 @@ pub fn build(b: *std.Build) void {
         const sdl_lib = sdl.artifact("SDL3");
         module.addIncludePath(sdl_lib.getEmittedIncludeTree());
         module.linkLibrary(sdl_lib);
+        configure_pipewire(target, sdl_lib, pipewire);
 
         module.addIncludePath(b.path("generated"));
         module.addIncludePath(b.path("generated/backends"));
