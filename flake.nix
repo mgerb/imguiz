@@ -42,7 +42,7 @@
           buildInputs = with pkgs; [
             python312
             python312Packages.ply
-            zigpkgs.master
+            zigpkgs."0.17.0"
             self.packages.${system}.zls-custom
             bash
           ];
