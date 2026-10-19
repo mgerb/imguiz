@@ -24,6 +24,11 @@ const imguiz = b.dependency("imguiz", .{
     // Optionally enable FreeType font rasterization. It is compiled by Zig and statically linked.
     // https://github.com/ocornut/imgui/blob/master/misc/freetype/README.md
     .freetype = true,
+    // Optional SDL configuration overrides.
+    .sdl_build_config_h_overrides = &.{
+        "-USDL_AUDIO_DRIVER_ALSA",
+        "-USDL_AUDIO_DRIVER_JACK",
+    },
 });
 exe.root_module.addImport("imguiz", imguiz.module("imguiz"));
 ```

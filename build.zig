@@ -131,6 +131,11 @@ pub fn build(b: *std.Build) void {
     const generate_bindings = b.option(bool, "generate", "Generate the bindings");
     const freetype = b.option(bool, "freetype", "Enable FreeType font rasterization") orelse false;
     const pipewire = b.option(Pipewire, "pipewire_linkage", "Configure SDL's PipeWire backend");
+    const sdl_build_config_h_overrides = b.option(
+        []const []const u8,
+        "sdl_build_config_h_overrides",
+        "Override SDL_build_config.h entries (e.g. '-DHAVE_SIN=1', '-UHAVE_COS')",
+    ) orelse &.{};
 
     if (generate_bindings != null and generate_bindings.?) {
         generateBindings(b, target, optimize);
@@ -151,6 +156,7 @@ pub fn build(b: *std.Build) void {
             .target = target,
             .optimize = optimize,
             .preferred_linkage = .static,
+            .build_config_h_overrides = sdl_build_config_h_overrides,
         });
         const sdl_lib = sdl.artifact("SDL3");
         module.addIncludePath(sdl_lib.getEmittedIncludeTree());
